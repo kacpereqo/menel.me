@@ -7,7 +7,15 @@
 {% block content %}
 <div id="content">
     {% for post in posts %}
-        <img src="data:image/jpg;base64,{{post[3]}}">
+        <div class="post">
+            <ul>
+                <li><a href="{{url_for('post_lookup', post_id = post[0])}}">{{post[1]}}</a></li>
+                <li>Dodano przez:<a href="{{url_for('user', nick = post[9])}}">{{post[9]}}</a></li>
+                <li>Dodano: {{post[7][:-7]}}</li>
+            </ul>
+            <img src="data:image/jpg;base64,{{post[3]}}">
+        </div>
+        
     {% endfor %}
 </div>
 

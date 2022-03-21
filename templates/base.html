@@ -71,7 +71,7 @@
                     </form>
                     {% else %}
                     zalogowany jako {{session['user']['nick']}}
-                    <li><a href="/user">Profil</a></li>
+                    <li><a href="{{url_for('user',nick = session['user']['nick'])}}">Profil</a></li>
                     <li><a href="/create">Stwórz post</a></li>
                     <li>
                         <form action="{{url_for('logout')}}" method="POST">

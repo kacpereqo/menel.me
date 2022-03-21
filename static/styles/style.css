@@ -122,3 +122,27 @@ ul span {
     position: absolute;
     right: -80px;
 }
+
+.post{
+    width: 100%;
+    height: 130px;
+    margin-bottom: 10px;
+    background-color: #f2f2f2;
+    position: relative;
+}
+
+.post ul{
+    display: block;
+    width: fit-content;
+    position: absolute;
+    left:100px;
+    top: 15px;
+}
+
+.post img{
+    width: 130px;
+    height: 100px;
+    position: absolute;
+    right: 15px;
+    top:15px;
+}

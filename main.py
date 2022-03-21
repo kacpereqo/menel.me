@@ -12,8 +12,7 @@ app.secret_key = "secret"
 
 @app.route('/')
 def index():
-    # 10 latest posts
-    c.execute("SELECT * FROM posts ORDER BY id DESC LIMIT 10")
+    c.execute("SELECT * FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
     return render_template('index.html',posts = posts)
 
@@ -32,17 +31,12 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/user')
-def user():
-    if "user" in session:
-        user = session['user']
-        nick = user['nick']
-        email = user['email']
-        password = user['password']
-        user_id = user['id']
-        return render_template('user.html', nick=nick, email=email, password=password, id = user_id)
-    else:
-        return redirect(url_for('index'))
+@app.route('/user/<nick>')
+def user(nick):
+    c.execute("SELECT * FROM users WHERE nick = ?", (nick,))
+    user = c.fetchone()
+    return render_template('user.html', nick=user[1], email=user[3], password=user[2], id = user[0])
+
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -87,6 +81,12 @@ def create():
         return render_template('create.html')
     else:
         return redirect(url_for('index'))
+
+@app.route("/post_lookup/<post_id>")
+def post_lookup(post_id):
+    c.execute("SELECT * FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
+    post = c.fetchone()
+    return render_template('post_lookup.html', post=post)
 
 
 if __name__ == '__main__':
