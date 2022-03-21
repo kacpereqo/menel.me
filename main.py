@@ -66,7 +66,7 @@ def login():
             session['user']['password'] = password
             session['user']['email'] = email
             session['user']['id'] = data[0]
-            return redirect(url_for('user'))
+            return redirect(url_for('user',nick=session['user']['nick']))
     return render_template('register.html')
 
 
