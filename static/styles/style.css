@@ -13,9 +13,9 @@ html {
     margin-left: auto;
     margin-right: auto;
     background-color: white;
-    height:1500px;
+    height: 1500px;
     width: 850px;
-    margin-bottom:100px;
+    margin-bottom: 100px;
 }
 
 #logo {
@@ -23,26 +23,38 @@ html {
     height: fit-content;
 }
 
-#left-bar, #right-bar{
-    float:left;
+#left-bar, #right-bar {
+    float: left;
     width: 165px;
-    height: 1248px;
-}
-#left-bar{
-    border-right: #A8A8A8  solid 1px;
+    height: 1244px;
 }
 
-#right-bar{
-    border-left: #A8A8A8  solid 1px;
+#left-bar {
+    border-right: #A8A8A8 solid 1px;
 }
 
-#content{
+#right-bar {
+    float: right;
+    border-left: #A8A8A8 solid 1px;
+}
+
+#mid-bar {
     position: relative;
-    float:left;
+    float: left;
     width: 58%;
-    margin: 10px;
+    margin: 0 10px 0 10px;
     text-align: justify;
-    height: 1068px;
+    height: 1248px;
+    overflow: hidden;
+}
+
+#content {
+    position: relative;
+    float: left;
+    width: 498px;
+    text-align: justify;
+    height: 1058px;
+    overflow: hidden;
 }
 
 ul {
@@ -54,36 +66,59 @@ ul {
     height: fit-content;
     text-align: center;
     display: block;
-    float:inline-end left;
+    float: inline-end left;
 }
 
-ul a{
-    color:#5e7528;
+ul a {
+    color: #5e7528;
     text-decoration: none;
 }
 
-ul a:hover{
+ul a:hover {
     color: #86A738;
 }
-ul span{
+
+ul span {
     font-family: helvetica, sans-serif;
     font-size: 11px;
 }
 
-#tagi{
-    position:absolute;
-    bottom:-180px;
+#tagi {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     border-top: 2px solid #A8A8A8;
     width: 498px;
-    height: 180px;
+    height: 178px;
     text-align: center;
 }
-#right-bar input[type=text]{
+
+#right-bar input[type=text] {
     width: 85%;
 }
 
-#kategorie li:nth-child(1n+2){
+#kategorie li:nth-child(1n+2) {
     list-style-image: url("../img/gwiazdka.jpg");
     text-align: left;
     margin-left: 20px;
+}
+
+#rejestracja{
+    margin: auto;
+    width: 80%;
+    position: relative;
+}
+
+.rejestracja-field{
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+}
+.rejestracja-field input{
+    position: absolute;
+    right: 30px;
+}
+.rejestracja-field:last-child{
+    position: absolute;
+    right: -80px;
 }

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+nick:{{nick}}
+<br>
+email:{{email}}
+<br>
+password:{{password}}
+{% endblock %}

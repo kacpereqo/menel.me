@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+
+<div id="rejestracja">
+    <form action="#" method="post">
+        <div class="rejestracja-field">
+            <label for="nck">Nick</label>
+            <input name="nck" type="text">
+        </div>
+        <div class="rejestracja-field">
+            <label for="email">E-mail</label>
+            <input name="eml" type="text">
+        </div>
+        <div class="rejestracja-field">
+            <label for="password">Hasło</label>
+            <input name="pswrd" type="text">
+        </div>
+        <div class="rejestracja-field">
+            <label for="password-repeat">Potwierdź hasło</label>
+            <input name="pswrd-r" type="text">
+        </div>
+        <div class="rejestracja-field">
+            <input type="submit" id="rejestracja-button" value="Zarejestruj">
+        </div>
+
+    </form>
+</div>
+{% endblock %}
