@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+<div id="postowanie">
+    <form action="#" method="post" enctype="multipart/form-data">
+        <div class="rejestracja-field">
+            <label for="title">Tytół</label>
+            <input name="title" type="text">
+        </div>
+        <div class="rejestracja-field">
+            <label for="description">Opis</label>
+            <input name="description" type="text">
+        </div>
+        <div class="rejestracja-field">
+            <label for="file">zdjecie</label>
+            <input name="file" type="file">
+        </div>
+        <div class="rejestracja-field">
+        </div>
+        <input type="submit" id="rejestracja-button" value="Prześlij">
+        
+    </form>
+</div>
+{% endblock %}

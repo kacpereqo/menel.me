@@ -60,8 +60,7 @@
             </ul>
 
             <ul id="logowanie">
-                {% if session|length < 1 %}
-                <form action="{{url_for('login')}}" method="POST">
+                {% if session|length < 1 %} <form action="{{url_for('login')}}" method="POST">
                     <li><img src=" /static/img/logowanie.bmp"></li>
                     <li> <span>E-mail</span> <input type="text" name="eml"></li>
                     <li> <span>Hasło</span> <input type="text" name="pswrd"></li>
@@ -69,14 +68,17 @@
                     <li><input type="submit" value="Zaloguj"></li>
                     <li><a href="/register">Nowe konto</a></li>
                     <li><a href="#">Nie pamiętam hasła</a></li>
-                </form>
-                {% else %}
-                    zalogowany
-                    <a href="/user">Profil</a>
-                    <form action="{{url_for('logout')}}" method="POST">
-                        <input type="submit" value="wyloguj">
                     </form>
-                {% endif %}
+                    {% else %}
+                    zalogowany jako {{session['user']['nick']}}
+                    <li><a href="/user">Profil</a></li>
+                    <li><a href="/create">Stwórz post</a></li>
+                    <li>
+                        <form action="{{url_for('logout')}}" method="POST">
+                            <input type="submit" value="wyloguj">
+                        </form>
+                    </>
+                    {% endif %}
             </ul>
 
             <ul id="polecane">
