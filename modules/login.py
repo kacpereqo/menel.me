@@ -6,7 +6,7 @@ from argon2.exceptions import VerifyMismatchError
 
 login_app = Blueprint('login_app', __name__, static_folder="../static",
                   template_folder="../templates")
- 
+                  
 ph = PasswordHasher()
     
 @login_app.route('/login', methods=['POST', 'GET'])
@@ -40,7 +40,7 @@ def login():
                     session['user']['email'] = email
                     session['user']['id'] = data[0]
                     return redirect(url_for('user', nick=data[1]))
-        return render_template('index.html')
+        return redirect(url_for('index'))
 
 
 @login_app.route('/register', methods=['POST', 'GET'])

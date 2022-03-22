@@ -5,12 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<ul>
-    <li>nick_autora:{{post[9]}}</li>
-</ul>
-zdjencie:<img id="lookup_img" src="data:image/jpg;base64,{{post[3]}}"></br>
-upvoty:{{post[5]}}</br>
-downvotes:{{post[6]}}</br>
-data:{{post[7]}}</br>
-
+<div class="post_lookup">
+    <div id = "credits">
+        <p><a href="{{url_for('user',nick=post[9])}}">{{post[9]}}</a></p>
+        <p>{{post[7][:-7]}}
+        </div>
+        <h2>{{post[1]}}</h2>
+        <img id="lookup_img" src="data:image/jpg;base64,{{post[3]}}">
+        <div id = "rates">
+            <p>{{post[5]}}<a href="{{url_for('upvote',post_id = post[0])}}">+</a></p>
+            <p>{{post[6]}}<a href="{{url_for('downvote',post_id = post[0])}}">-</a></p>
+        </div>
+    </ul>
+</div>
 {% endblock %}

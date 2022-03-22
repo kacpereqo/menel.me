@@ -68,13 +68,12 @@ ul {
     display: block;
     float: inline-end left;
 }
-
-ul a {
+a {
     color: #5e7528;
     text-decoration: none;
 }
 
-ul a:hover {
+a:hover {
     color: #86A738;
 }
 
@@ -139,7 +138,7 @@ ul span {
     position: absolute;
     text-align: center;
     left:100px;
-    top: 15px;
+    top: 35px;
 }
 
 .post img{
@@ -149,6 +148,34 @@ ul span {
     right: 15px;
     top:15px;
 }
-.post h3 {
-    margin: 5px;
+.post h3{
+    margin: 0;
 }
+
+#credits p{
+    text-align: left;
+    margin: 2px;
+    font-size: 11px;
+}
+
+.post_lookup h2{
+    margin: 0;
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+}
+.post_lookup img{
+    width: 100%;
+    height: fit-content;
+}
+
+.post_lookup #rates p{
+    display: inline;
+    margin-left:30px;
+}
+
+.post_lookup #rates p a{
+    font-size: 16px;
+    font-weight: bold;
+}
+

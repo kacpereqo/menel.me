@@ -25,8 +25,8 @@ c = conn.cursor()
 # c.execute("""ALTER TABLE posts ADD COLUMN date text""")
 
 # delete all records from posts
-c.execute("""DELETE FROM posts where id = 13 """)
-conn.commit()
+# c.execute("""DELETE FROM posts where id = 13 """)
+# conn.commit()
 
 # c.execute("SELECT * FROM 'posts','users' WHERE posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
 # posts = c.fetchall()

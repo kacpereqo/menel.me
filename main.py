@@ -73,8 +73,22 @@ def post_lookup(post_id):
     post = c.fetchone()
     return render_template('post_lookup.html', post=post)
 
+@app.route("/upvote/<post_id>")
+def upvote(post_id):
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
+    conn.commit()
+    return redirect(url_for('post_lookup', post_id=post_id))
+
+@app.route("/downvote/<post_id>")
+def downvote(post_id):
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+    conn.commit()
+    return redirect(url_for('post_lookup', post_id=post_id))
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 # smierc ma haslo sex123 nie arek123

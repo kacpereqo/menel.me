@@ -14,5 +14,4 @@ def config(app):
     app.secret_key = "secret"
     app.permanent_session_lifetime = timedelta(minutes=5)
     app.register_blueprint(login_app)
-    app.register_blueprint(login_app)
     return app
