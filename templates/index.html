@@ -9,7 +9,7 @@
     {% for post in posts %}
         <div class="post">
             <ul>
-                <li><a href="{{url_for('post_lookup', post_id = post[0])}}">{{post[1]}}</a></li>
+                <li><h><a href="{{url_for('post_lookup', post_id = post[0])}}">{{post[1]}}</a></h></li>
                 <li>Dodano przez:<a href="{{url_for('user', nick = post[9])}}">{{post[9]}}</a></li>
                 <li>Dodano: {{post[7][:-7]}}</li>
             </ul>

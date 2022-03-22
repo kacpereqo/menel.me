@@ -5,15 +5,12 @@
 {% endblock %}
 
 {% block content %}
-id:{{post[0]}}</br>
-tytół{{post[1]}}</br>
-opis:{{post[2]}}</br>
-zdjencie:<img id = "lookup_img" src="data:image/jpg;base64,{{post[3]}}"></br>
-id_autora:{{post[4]}}</br>
+<ul>
+    <li>nick_autora:{{post[9]}}</li>
+</ul>
+zdjencie:<img id="lookup_img" src="data:image/jpg;base64,{{post[3]}}"></br>
 upvoty:{{post[5]}}</br>
 downvotes:{{post[6]}}</br>
 data:{{post[7]}}</br>
-nick_autora:{{post[8]}}</br>
-haslo_autora:{{post[9]}}</br>
-email_autora:{{post[10]}}</br>
+
 {% endblock %}

@@ -134,7 +134,10 @@ ul span {
 .post ul{
     display: block;
     width: fit-content;
+    height: fit-content;
+    max-width: 200px;
     position: absolute;
+    text-align: center;
     left:100px;
     top: 15px;
 }
@@ -145,4 +148,7 @@ ul span {
     position: absolute;
     right: 15px;
     top:15px;
+}
+.post h3 {
+    margin: 5px;
 }
