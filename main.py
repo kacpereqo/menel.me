@@ -1,11 +1,15 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, session
+from urllib import response
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
+from flask import Flask, make_response, render_template, request, redirect, url_for, session
 from flask_caching import Cache
 from datetime import datetime, timedelta
 import base64
 
 conn = sqlite3.connect('database.sqlite', check_same_thread=False)
 c = conn.cursor()
+ph = PasswordHasher()
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -19,12 +23,16 @@ config = {
 app.config.from_mapping(config)
 cache = Cache(app)
 
+
 @app.route('/')
 @cache.cached(timeout=300)
 def index():
-    c.execute("SELECT * FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
+    c.execute(
+        "SELECT * FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
-    return render_template('index.html', posts=posts)
+    response = make_response(render_template('index.html', posts=posts)) # mozna jebnac do tego osobna funkcje bo pierdolca idzie dostac xd
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    return response
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -34,6 +42,11 @@ def register():
         nick = request.form['nck']
         password = request.form['pswrd']
         email = request.form['eml']
+
+        # trzeba walidowac emaile nicki i hasla czy maja dlugosc znaki itp
+
+        password = ph.hash(password)
+
         c.execute("INSERT INTO users (nick, password, email) VALUES (?, ?, ?)",
                   (nick, password, email))
         conn.commit()
@@ -45,7 +58,7 @@ def register():
 def user(nick):
     c.execute("SELECT * FROM users WHERE nick = ?", (nick,))
     user = c.fetchone()
-    return render_template('user.html', nick=user[1], email=user[3], password=user[2], id = user[0])
+    return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0])
 
 
 # +48 69 69 69 69 call me later <3 :3
@@ -55,18 +68,35 @@ def login():
     if request.method == 'POST':
         email = request.form['eml']
         password = request.form['pswrd']
+
+        password = ph.hash(password)
+
         c.execute(
-            "SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+            "SELECT * FROM users WHERE email = ?", (email,))
+
         data = c.fetchone()
+
         if data is None:
             return redirect(url_for('index'))
         else:
-            session['user'] = {}
-            session['user']['nick'] = data[1]
-            session['user']['password'] = password
-            session['user']['email'] = email
-            session['user']['id'] = data[0]
-            return redirect(url_for('user',nick=session['user']['nick']))
+            try:
+                isValid = ph.verify(password, data[1])
+            except VerifyMismatchError:
+                isValid = False
+            if isValid:
+                session['user'] = {}
+                session['user']['nick'] = data[1]
+                session['user']['password'] = data[2]
+                session['user']['email'] = email
+                session['user']['id'] = data[0]
+                return redirect(url_for('user',nick=data[1]))
+
+            # session['user'] = {}
+            # session['user']['nick'] = data[1]
+            # session['user']['password'] = password
+            # session['user']['email'] = email
+            # session['user']['id'] = data[0]
+            # return redirect(url_for('user',nick=session['user']['nick']))
     return render_template('register.html')
 
 
@@ -94,9 +124,11 @@ def create():
     else:
         return redirect(url_for('index'))
 
+
 @app.route("/post_lookup/<post_id>")
 def post_lookup(post_id):
-    c.execute("SELECT * FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
+    c.execute(
+        "SELECT * FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
     post = c.fetchone()
     return render_template('post_lookup.html', post=post)
 
@@ -104,4 +136,4 @@ def post_lookup(post_id):
 if __name__ == '__main__':
     app.run(debug=True)
 
-#nikker test
+# smierc ma haslo sex123 nie arek123
