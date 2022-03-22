@@ -60,13 +60,13 @@
             </ul>
 
             <ul id="logowanie">
-                {% if session|length < 1 %} <form action="{{url_for('login')}}" method="POST">
+                {% if session|length < 1 %} <form action="{{url_for('login_app.login')}}" method="POST">
                     <li><img src=" /static/img/logowanie.webp"></li>
                     <li> <span>E-mail</span> <input type="text" name="eml"></li>
                     <li> <span>Hasło</span> <input type="text" name="pswrd"></li>
                     <li><input type="checkbox"> <span>Zapamiętaj mnie</span></li>
                     <li><input type="submit" value="Zaloguj"></li>
-                    <li><a href="/register">Nowe konto</a></li>
+                    <li><a href="{{url_for('login_app.register')}}">Nowe konto</a></li>
                     <li><a href="#">Nie pamiętam hasła</a></li>
                     </form>
                     {% else %}
@@ -74,7 +74,7 @@
                     <li><a href="{{url_for('user',nick = session['user']['nick'])}}">Profil</a></li>
                     <li><a href="/create">Stwórz post</a></li>
                     <li>
-                        <form action="{{url_for('logout')}}" method="POST">
+                        <form action="{{url_for('login_app.logout')}}" method="POST">
                             <input type="submit" value="wyloguj">
                         </form>
                     </>
