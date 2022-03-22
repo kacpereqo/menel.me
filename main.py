@@ -15,6 +15,7 @@ app = config(Flask(__name__))
 # app.config.from_mapping(config)
 # cache = Cache(app)
 
+
 @app.route('/')
 def index():
     conn = get_conn()
