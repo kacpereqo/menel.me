@@ -1,6 +1,6 @@
 # sqlite 3 database setup
 import sqlite3
-conn = sqlite3.connect('database.sqlite')
+conn = sqlite3.connect('data/db/database.sqlite')
 c = conn.cursor()
 
 # c.execute("""CREATE TABLE users (
@@ -31,3 +31,12 @@ c = conn.cursor()
 # c.execute("SELECT * FROM 'posts','users' WHERE posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
 # posts = c.fetchall()
 # print(posts[0][8])
+
+# create comments table 
+c.execute("""CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content text NOT NULL,
+    date text NOT NULL,
+    user_id integer NOT NULL,
+    post_id integer NOT NULL
+)""")

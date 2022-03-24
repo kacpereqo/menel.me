@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-    <script type="" src="{{ url_for('static',filename='js/main.js') }}"></script> 
+    <script type="" src="{{ url_for('static',filename='js/main.js') }}"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +12,19 @@
 
 <body>
     <div id="container">
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
         <div id="error">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
             <ul>
-                <li> <input type="button" value = "x" onclick="usunkurwe()"> </li>
+                <li> <input type="button" value="x" onclick="usunkurwe()"> </li>
                 {% for message in messages %}
                 <li>{{ message }}</li>
                 {% endfor %}
             </ul>
-            {% endif %}
-            {% endwith %}
         </div>
+            {% endif %}
+        {% endwith %}
         <div id="logo"><img src="/static/img/logo.webp"></div>
         <div id="left-bar">
             <ul id="menu">
@@ -85,7 +86,7 @@
                     {% else %}
                     zalogowany jako {{session['user']['nick']}}
                     <li><a href="{{url_for('user',nick = session['user']['nick'])}}">Profil</a></li>
-                    <li><a href="/create">Stwórz post</a></li>
+                    <li><a href="{{url_for('post_app.create')}}">Stwórz post</a></li>
                     <li>
                         <form action="{{url_for('login_app.logout')}}" method="POST">
                             <input type="submit" value="wyloguj">

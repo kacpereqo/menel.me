@@ -5,8 +5,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 
 login_app = Blueprint('login_app', __name__, static_folder="../static",
-                  template_folder="../templates")
-                  
+                  template_folder="../templates")           
 ph = PasswordHasher()
     
 @login_app.route('/login', methods=['POST', 'GET'])

@@ -11,7 +11,9 @@ def get_conn():
 
 def config(app):
     from modules.login import login_app
+    from modules.post import post_app
     app.secret_key = "secret"
     app.permanent_session_lifetime = timedelta(minutes=5)
     app.register_blueprint(login_app)
+    app.register_blueprint(post_app)
     return app

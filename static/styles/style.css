@@ -68,6 +68,7 @@ ul {
     display: block;
     float: inline-end left;
 }
+
 a {
     color: #5e7528;
     text-decoration: none;
@@ -102,27 +103,29 @@ ul span {
     margin-left: 20px;
 }
 
-#rejestracja{
+#rejestracja {
     margin: auto;
     width: 80%;
     position: relative;
 }
 
-.rejestracja-field{
+.rejestracja-field {
     width: 100%;
     height: 30px;
     margin-bottom: 10px;
 }
-.rejestracja-field input{
+
+.rejestracja-field input {
     position: absolute;
     right: 30px;
 }
-.rejestracja-field:last-child{
+
+.rejestracja-field:last-child {
     position: absolute;
     right: -80px;
 }
 
-.post{
+.post {
     width: 100%;
     height: 130px;
     margin-bottom: 10px;
@@ -130,56 +133,63 @@ ul span {
     position: relative;
 }
 
-.post ul{
+.post ul {
     display: block;
     width: fit-content;
     height: fit-content;
     max-width: 200px;
     position: absolute;
     text-align: center;
-    left:100px;
+    left: 100px;
     top: 35px;
 }
 
-.post img{
+.post img {
     width: 130px;
     height: 100px;
     position: absolute;
     right: 15px;
-    top:15px;
+    top: 15px;
 }
-.post h3{
+
+.post h3 {
     margin: 0;
 }
 
-#credits p{
+#credits p {
     text-align: left;
     margin: 2px;
     font-size: 11px;
 }
 
-.post_lookup h2{
+.post_lookup {
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+.post_lookup h2 {
     margin: 0;
     width: 100%;
     height: fit-content;
     text-align: center;
 }
-.post_lookup img{
+
+.post_lookup img {
     width: 100%;
     height: fit-content;
 }
 
-.post_lookup #rates p{
+.post_lookup #rates p {
     display: inline;
-    margin-left:30px;
+    margin-left: 30px;
 }
 
-.post_lookup #rates p a{
+.post_lookup #rates p a {
     font-size: 16px;
     font-weight: bold;
 }
 
-#error{
+#error {
     font-weight: bold;
     height: fit-content;
     width: 842px;
@@ -187,16 +197,48 @@ ul span {
     background-color: #f2f2f2;
     border: 1px solid #A8A8A8;
     padding: 3px;
-    position:fixed;
-    top:0;
+    position: fixed;
+    top: 0;
     z-index: 100;
 }
 
-#error ul{
+#error ul {
     width: 100%;
     display: block;
     text-align: center;
 }
-#error ul li:first-child{
+
+#error ul li:first-child {
     float: right;
+}
+
+.comment ul {
+    width: 100%;
+    display: block;
+    height: fit-content;
+    background-color: #f2f2f2;
+    margin-bottom: 10px;
+    float: left;
+    padding: 5px;
+}
+
+.comment ul li:first-child {
+    text-align: left;
+    float:inline-start;
+    font-size: 18px;
+    width: 240px;
+}
+
+.comment ul li:nth-child(2) {
+    width: 240px;
+    float:inline-start;
+    text-align: right;
+}
+
+.comment ul li:last-child {
+    text-align: justify;
+    float:inline-start;
+    width: 100%;
+    height: fit-content;
+    font-size: 14px;
 }
