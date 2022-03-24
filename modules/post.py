@@ -27,7 +27,7 @@ def create():
                 conn.commit()
                 flash("Dodano post!")
                 return redirect(url_for('index'))
-            return render_template('create')
+            return render_template('create.html')
         else:
             return redirect(url_for('index'))
 
@@ -39,8 +39,7 @@ def post_lookup(post_id):
         c.execute(
             "SELECT * FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
         post = c.fetchone()
-        c.execute(
-            "SELECT users.nick,comments.date,comments.content FROM comments,posts,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
+        c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()
 
         return render_template('post_lookup.html', post=post, comments=comments)
