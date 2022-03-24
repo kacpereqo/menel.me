@@ -6,32 +6,34 @@
 
 {% block content %}
 <div class="post_lookup">
-    <div id = "credits">
+    <div id="credits">
         <p><a href="{{url_for('user',nick=post[9])}}">{{post[9]}}</a></p>
         <p>{{post[7][:-7]}}
-        </div>
-        <h2>{{post[1]}}</h2>
-        <img id="lookup_img" src="data:image/jpg;base64,{{post[3]}}">
-        <p>{{post[2]}}</p>
-        <div id = "rates">
-            <p>{{post[5]}}<a href="{{url_for('post_app.upvote',post_id = post[0])}}">+</a></p>
-            <p>{{post[6]}}<a href="{{url_for('post_app.downvote',post_id = post[0])}}">-</a></p>
-        </div>
+    </div>
+    <h2>{{post[1]}}</h2>
+    <img id="lookup_img" src="data:image/jpg;base64,{{post[3]}}">
+    <p>{{post[2]}}</p>
+    <div id="rates">
+        <p>{{post[5]}}<a href="{{url_for('post_app.upvote',post_id = post[0])}}">+</a></p>
+        <p>{{post[6]}}<a href="{{url_for('post_app.downvote',post_id = post[0])}}">-</a></p>
+    </div>
 </div>
-<form action="{{url_for('post_app.comment', post_id = post[0])}}" method="post">
-    <textarea name="comment" rows="4" cols="50"></textarea>
-    <input type="submit" value="Skomentuj">
-</form> 
-<div id="comments">
-    <h3>Komentarze</h3>
-    {% for comment in comments %}
+{% if session|length < 1 %} 
+    <textarea disabled rows="2" cols="55">Zalguj się aby zkomentować</textarea>
+    <input type="submit" disabled value="Skomentuj">
+    {% else %}
+    <form action="{{url_for('post_app.comment', post_id = post[0])}}" method="post">
+        <textarea name="comment" rows="2" cols="55"></textarea>
+        <input type="submit" value="Skomentuj">
+    </form>
+    {% endif %}
+    <div id="comments">
+        {% for comment in comments %}
         <div class="comment">
-            <ul>
-                <li><a href="{{url_for('user', nick = comment[0])}}">{{comment[0]}}</a></li>
-                <li>{{comment[1][:-7]}}</li>
-                <li>{{comment[2]}}</li>
-            </ul>
+            <div id="author"><a href="{{url_for('user', nick = comment[0])}}">{{comment[0]}}</a></div>
+            <div id="date">{{comment[1][:-7]}}</div>
+            <p>{{comment[2]}}</p>
         </div>
-    {% endfor %}
-</div>
-{% endblock %}
+        {% endfor %}
+    </div>
+    {% endblock %}

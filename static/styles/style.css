@@ -212,33 +212,38 @@ ul span {
     float: right;
 }
 
-.comment ul {
-    width: 100%;
-    display: block;
-    height: fit-content;
+#comments{
+    margin-top: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    height: 385px;
+}
+
+.comment {
+    padding: 5px;
+    margin-right: 15px;
+    position: relative;
+    width: 468px;
     background-color: #f2f2f2;
     margin-bottom: 10px;
-    float: left;
-    padding: 5px;
 }
 
-.comment ul li:first-child {
-    text-align: left;
-    float:inline-start;
+.comment #author {
     font-size: 18px;
-    width: 240px;
 }
 
-.comment ul li:nth-child(2) {
-    width: 240px;
-    float:inline-start;
-    text-align: right;
+.comment #date {
+    font-size: 11px;
+    right: 5px;
+    position: absolute;
+    top:5px;
 }
-
-.comment ul li:last-child {
+.comment p{
     text-align: justify;
-    float:inline-start;
-    width: 100%;
-    height: fit-content;
-    font-size: 14px;
+}
+textarea{
+    margin-top: 10px;
+    width: 485px;
+    resize: none;
 }
