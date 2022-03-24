@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask import Flask, make_response, render_template, request, redirect, url_for, session, current_app
+from flask import flash, render_template, request, redirect, url_for, session, current_app
 from modules.utils import get_conn
 from argon2 import PasswordHasher 
 from argon2.exceptions import VerifyMismatchError
@@ -39,6 +39,7 @@ def login():
                     session['user']['password'] = data[2]
                     session['user']['email'] = email
                     session['user']['id'] = data[0]
+                    flash(f'Zalogowano pomyślnie jako {data[1]}')
                     return redirect(url_for('user', nick=data[1]))
         return redirect(url_for('index'))
 
@@ -64,6 +65,7 @@ def register():
             c.execute("INSERT INTO users (nick, password, email) VALUES (?, ?, ?)",
                     (nick, password, email))
             conn.commit()
+            flash("Zarejestrowano pomyślnie!")
             return redirect(url_for('login'))
         return render_template('register.html')
 
@@ -75,4 +77,5 @@ def logout():
         conn = get_conn()
         c = conn.cursor()
         session.pop('user', None)
+        flash('Wylogowano pomyślnie!')
         return redirect(url_for('index'))

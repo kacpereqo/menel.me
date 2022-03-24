@@ -1,5 +1,5 @@
 from urllib import response # co tu to robi kurwa!?!?!?!??!
-from flask import Flask, make_response, render_template, request, redirect, url_for, session
+from flask import Flask, make_response, render_template, request, redirect, url_for, session, flash
 # from flask_caching import Cache
 from modules.utils import config, get_conn
 from datetime import datetime, timedelta
@@ -20,7 +20,6 @@ app = config(Flask(__name__))
 def index():
     conn = get_conn()
     c = conn.cursor()
-        
     c.execute("SELECT * FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
     # mozna jebnac do tego osobna funkcje bo pierdolca idzie dostac xd
@@ -57,6 +56,7 @@ def create():
             c.execute("INSERT INTO posts (title, description, content, user_id, date)VALUES (?, ?, ?, ?, ?)",
                       (title, description, content, user_id, date))
             conn.commit()
+            flash("Dodano post!")
             return redirect(url_for('index'))
         return render_template('create.html')
     else:
