@@ -32,8 +32,6 @@ def login():
             else:
                 isValid = bcrypt.checkpw(password.encode('utf-8'), data[2].encode('utf-8'))
 
-                print("valid: ", isValid)
-
                 if int(data[4]) == 0 and isValid:
                     if len(data[5]) > 1:
                         flash(f"Konto zablokowane!\n{data[5]}")
@@ -42,7 +40,6 @@ def login():
                     return redirect(url_for('index'))
 
                 if int(data[4]) == 1 and isValid:
-                    
                     session['user'] = {}
                     session['user']['nick'] = data[1]
                     session['user']['password'] = data[2]
@@ -162,38 +159,78 @@ def verify():
 
 @login_app.route('/reset_password', methods=['POST', 'GET'])
 def reset_password():
+    with current_app.app_context():
+        if request.method == 'POST':
+            email = request.form['eml']
+            token = secrets.token_urlsafe(16)
+            reason = ""
 
-    # email = request.args.get('email')
-    # token = request.args.get('token')
-
-    # with current_app.app_context():
-    #     if request.method == 'POST':
-    #         # reset password
-    #         email = request.form['email']
-    #         token = secrets.token_urlsafe(16)
-    #         reason = ""
-
-    #         if not validators.email(email):
-    #             flash(f'Nieprawidłowy adres email!')
-    #             return render_template('reset_password.html', reason=reason)
+            if not validators.email(email):
+                flash(f'Nieprawidłowy adres email!')
+                return render_template('reset_password.html', reason=reason)
             
-    #         conn = get_conn()
-    #         c = conn.cursor()
-    #         c.execute("SELECT * FROM users WHERE email = ?", (email,))
-    #         conn.commit()
-    #         data = c.fetchone()
+            conn = get_conn()
+            c = conn.cursor()
+            c.execute("SELECT * FROM users WHERE email = ?", (email,))
+            conn.commit()
+            data = c.fetchone()
 
-    #         verify_link = f"http://localhost:5000/reset_password?email={email}&token={token}"
+            if data is not None:
+                c.execute("UPDATE users SET token = ? WHERE email = ?", (token, email))
+                conn.commit()
+
+                change_pass = f"http://localhost:5000/forgotten_password?email={email}&token={token}"
             
-    #         with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
-    #             yag.send(email, "Reset hasła", )
+                print(change_pass)
 
+                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
+                    yag.send(email, "Reset hasła", ["W celu zresetowania hasła kliknij w poniższy link, nie udostępniaj tego linku!", "\n", change_pass,"\n","Pozdrawiamy, załoga menele.me B)"])
 
-            
-
+            flash("Jeśli podany email istnieje w bazie danych, otrzymasz link do zmiany hasła")
 
         return render_template('reset_password.html')
 
+@login_app.route('/forgotten_password', methods=['GET', 'POST'])
+def forgotten_password():
+
+    email = request.args.get('email')
+    token = request.args.get('token')
+
+    with current_app.app_context():
+        if request.method == 'POST':
+            conn = get_conn()
+            c = conn.cursor()
+            c.execute("SELECT * FROM users WHERE email = ? AND token = ?", (email, token))
+            conn.commit()
+
+            print(email,token)
+
+            if c.fetchone() is not None:
+                data = c.fetchone()
+
+                password = request.form['pswrd']
+                password_second = request.form['pswrd-r']   
+
+                if password != password_second:
+                    flash(f'Hasła nie są identyczne!')
+                    return render_template('register.html')
+
+                if len(password) < 10 and len(password) > 32:
+                    flash(f'Hasło musi mieć od 10 do 32 znaków!')
+                    return render_template('register.html') 
+
+                password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+                password = password.decode('utf-8')
+
+                c.execute("UPDATE users SET password = ? WHERE email = ?", (password, email))
+
+                conn.commit()
+                flash("Hasło zostało zmienione! Możesz się teraz zalogować")
+                return redirect(url_for('index'))
+            else:
+                flash("Link wygasał!")
+                return redirect(url_for('index'))
+        return render_template('forgotten_password.html')
 
 @login_app.route('/logout', methods=['POST', 'GET'])
 def logout():

@@ -81,7 +81,7 @@
                     <li><input type="checkbox"> <span>Zapamiętaj mnie</span></li>
                     <li><input type="submit" value="Zaloguj"></li>
                     <li><a href="{{url_for('login_app.register')}}">Nowe konto</a></li>
-                    <li><a href="#">Nie pamiętam hasła</a></li>
+                    <li><a href="{{url_for('login_app.reset_password')}}">Nie pamiętam hasła</a></li>
                     </form>
                     {% else %}
                     zalogowany jako {{session['user']['nick']}}
