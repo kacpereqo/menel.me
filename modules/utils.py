@@ -3,7 +3,7 @@ import sqlite3
 from datetime import timedelta
 
 def get_conn():
-    DATABASE = 'data\db\database.sqlite'
+    DATABASE = 'data/db/database.sqlite'
     conn = getattr(g, '_database', None)
     if conn is None:
         conn = g._database = sqlite3.connect(DATABASE)

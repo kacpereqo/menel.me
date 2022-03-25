@@ -33,10 +33,32 @@ c = conn.cursor()
 # print(posts[0][8])
 
 # create comments table 
-c.execute("""CREATE TABLE comments (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    content text NOT NULL,
-    date text NOT NULL,
-    user_id integer NOT NULL,
-    post_id integer NOT NULL
-)""")
+# c.execute("""CREATE TABLE comments (
+#     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#     content text NOT NULL,
+#     date text NOT NULL,
+#     user_id integer NOT NULL,
+#     post_id integer NOT NULL
+# )""")
+
+# add active status to users
+# c.execute("""ALTER TABLE users ADD COLUMN activedwa boolean""")
+
+# add status to user (ex: banned)
+# c.execute("""ALTER TABLE users ADD COLUMN reason text""")
+
+# add token to user (ex: activation token)
+# c.execute("""ALTER TABLE users ADD COLUMN token text""")
+
+# c.execute("""CREATE TABLE users (
+#     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#     nick text,
+#     password text,
+#     email text,
+#     active boolean,
+#     reason text,
+#     token text
+# )""")
+
+# clear table users
+c.execute("DELETE FROM users WHERE id > 0")

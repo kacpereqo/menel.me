@@ -1,4 +1,4 @@
-from urllib import response # co tu to robi kurwa!?!?!?!??!
+from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
 from flask import Flask, make_response, render_template, request, redirect, url_for, session, flash
 # from flask_caching import Cache
 from modules.utils import config, get_conn
@@ -13,8 +13,6 @@ def index():
     c = conn.cursor()
     c.execute("SELECT * FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
-    # mozna jebnac do tego osobna funkcje bo pierdolca idzie dostac xd
-    # w sensie co?
     response = make_response(render_template('index.html', posts=posts))
     return response
 
@@ -32,3 +30,5 @@ def user(nick):
 if __name__ == '__main__':
     app.run(debug=True)
 # smierc ma haslo sex123 nie arek123
+
+# lihrjpnoszghyqjk
