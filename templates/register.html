@@ -10,19 +10,19 @@
     <form action="#" method="post">
         <div class="rejestracja-field">
             <label for="nck">Nick</label>
-            <input name="nck" type="text">
+            <input name="nck" type="text" required minlength="3" maxlength="20">
         </div>
         <div class="rejestracja-field">
             <label for="email">E-mail</label>
-            <input name="eml" type="text">
+            <input name="eml" type="text" required>
         </div>
         <div class="rejestracja-field">
             <label for="password">Hasło</label>
-            <input name="pswrd" type="text">
+            <input name="pswrd" type="text" required minlength="10" maxlength="32">
         </div>
         <div class="rejestracja-field">
             <label for="password-repeat">Potwierdź hasło</label>
-            <input name="pswrd-r" type="text">
+            <input name="pswrd-r" type="text" required minlength="10" maxlength="32">
         </div>
         <div class="rejestracja-field">
             <input type="submit" id="rejestracja-button" value="Zarejestruj">

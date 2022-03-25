@@ -26,7 +26,7 @@ def login():
             data = c.fetchone()
 
             if data is None:
-                flash(f'Konto nie istnieje!')
+                flash(f'Nieprawidłowe hasło!')
                 return redirect(url_for('index'))
                 
             else:

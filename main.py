@@ -23,7 +23,15 @@ def user(nick):
 
     c.execute("SELECT * FROM users WHERE nick = ?", (nick,))
     user = c.fetchone()
-    return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0])
+
+    if user is None:
+        flash("Użytkownik nie istnieje!")
+        return redirect(url_for('index'))
+
+    c.execute("SELECT * FROM posts WHERE posts.user_id = ? ORDER BY posts.id DESC LIMIT 10", (user[0],))
+    posts = c.fetchall()
+
+    return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0], posts=posts)
 
 # +48 69 69 69 69 call me later <3 :3
 
