@@ -7,15 +7,21 @@
 {% block content %}
 <div class="post_lookup">
     <div id="credits">
-        <p><a href="{{url_for('user',nick=post[9])}}">{{post[9]}}</a></p>
-        <p>{{post[7][:-7]}}
+        <p><a href="{{url_for('user',nick=post[0])}}">{{post[0]}}</a></p>
+        <p>{{post[1][:-7]}}
     </div>
-    <h2>{{post[1]}}</h2>
-    <img id="lookup_img" src="data:image/jpg;base64,{{post[3]}}">
-    <p>{{post[2]}}</p>
+    <h2>{{post[2]}}</h2>
+    <img id="lookup_img" src="/static/img/posts/{{post[3]}}_large.webp">
+    <p>{{post[4]}}</p>
     <div id="rates">
-        <p>{{post[5]}}<a href="{{url_for('post_app.upvote',post_id = post[0])}}">+</a></p>
-        <p>{{post[6]}}<a href="{{url_for('post_app.downvote',post_id = post[0])}}">-</a></p>
+        {% if session|length < 1 %}
+        <p>{{post[5]}}<a href="#">+</a></p>
+        <p>{{post[6]}}<a href="#">-</a></p>
+        <p style="font-size:11px;">Zaloguj się aby zjabolować</p>
+        {% else %}
+        <p>{{post[6]}}<a href="{{url_for('post_app.upvote',post_id = post[5])}}">+</a></p>
+        <p>{{post[7]}}<a href="{{url_for('post_app.downvote',post_id = post[5])}}">-</a></p>
+        {% endif %}
     </div>
 </div>
 {% if session|length < 1 %} 

@@ -1,7 +1,7 @@
 html {
     margin: 0;
     padding: 0;
-    background-image: url("../img/background.webp");
+    background-image: url("../img/ui/background.webp");
     background-color: #272727;
     background-repeat: repeat-x;
     font-family: arial, helvetica, sans-serif;
@@ -98,7 +98,7 @@ ul span {
 }
 
 #kategorie li:nth-child(1n+2) {
-    list-style-image: url("../img/gwiazdka.jpg");
+    list-style-image: url("../img/ui/gwiazdka.jpg");
     text-align: left;
     margin-left: 20px;
 }

@@ -61,4 +61,15 @@ c = conn.cursor()
 # )""")
 
 # clear table users
-c.execute("DELETE FROM users WHERE id > 0")
+
+# create table upvoted user_id integer post_id integer comment_id
+# c.execute("""CREATE TABLE voted (
+#     user_id integer NOT NULL,
+#     post_id integer,
+#     comment_id integer)""")
+# chnage posts column content to img_id
+c.execute("""ALTER TABLE posts
+RENAME COLUMN content TO img_id""")
+
+# c.execute("DELETE FROM posts")
+# conn.commit()

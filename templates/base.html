@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-    <script type="" src="{{ url_for('static',filename='js/main.js') }}"></script>
+    <script type="text/javascrip" src="{{ url_for('static',filename='js/main.js') }}"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,10 +25,10 @@
         </div>
             {% endif %}
         {% endwith %}
-        <div id="logo"><img src="/static/img/logo.webp"></div>
+        <div id="logo"><img src="/static/img/ui/logo.webp"></div>
         <div id="left-bar">
             <ul id="menu">
-                <li><img src=" /static/img/menu.webp"></li>
+                <li><img src=" /static/img/ui/menu.webp"></li>
                 <li><a href="/">Strona główna</a></li>
                 <li><a href="#">Forum</a></li>
                 <li><a href="#">Kontakt</a></li>
@@ -36,7 +36,7 @@
             </ul>
 
             <ul id="kategorie">
-                <li><img src=" /static/img/kategorie.webp"></li>
+                <li><img src=" /static/img/ui/kategorie.webp"></li>
                 <li><a href="#">HISTORIA DŻEYSONA</a></li>
                 <li><a href="#">Tańce i Pieśni</a></li>
                 <li><a href="#">Kultowe</a></li>
@@ -46,12 +46,12 @@
             </ul>
 
             <ul id="losowy">
-                <li><img src=" /static/img/losowy.webp"></li>
+                <li><img src=" /static/img/ui/losowy.webp"></li>
                 <li><a href="#">Losowy film</a></li>
             </ul>
 
             <ul id="hity">
-                <li><img src=" /static/img/hity.webp"></li>
+                <li><img src=" /static/img/ui/hity.webp"></li>
                 <li><a href="#">sex</a></li>
                 <li><a href="#">sex</a></li>
                 <li><a href="#">sex</a></li>
@@ -68,14 +68,14 @@
         </div>
         <div id="right-bar">
             <ul id="szukaj">
-                <li><img src=" /static/img/szukaj.webp"></li>
+                <li><img src=" /static/img/ui/szukaj.webp"></li>
                 <li><input type="text"></li>
                 <li><input type="submit" value="Search"></li>
             </ul>
 
             <ul id="logowanie">
                 {% if session|length < 1 %} <form action="{{url_for('login_app.login')}}" method="POST">
-                    <li><img src=" /static/img/logowanie.webp"></li>
+                    <li><img src=" /static/img/ui/logowanie.webp"></li>
                     <li> <span>E-mail</span> <input type="text" name="eml"></li>
                     <li> <span>Hasło</span> <input type="text" name="pswrd"></li>
                     <li><input type="checkbox"> <span>Zapamiętaj mnie</span></li>
@@ -96,7 +96,7 @@
             </ul>
 
             <ul id="polecane">
-                <li><img src=" /static/img/polecane.webp"></li>
+                <li><img src=" /static/img/ui/polecane.webp"></li>
                 <li><a href="#">Bajki</a></li>
                 <li><a href="#">Seriale Online</a></li>
                 <li><a href="#">Koncerty Na Żywo</a></li>
