@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
 from modules.utils import get_conn
-import base64
 from datetime import datetime
 from PIL import Image
 import io
@@ -24,10 +23,10 @@ def create():
                     "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
                 image.resize((130, 100), Image.ANTIALIAS).save(
-                    'data/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
+                    'static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
                 image.resize((473, 600), Image.ANTIALIAS).save(
-                    'data/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=45)
-                image.save('data/img/posts/' + str(latest_id) +
+                    'static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=45)
+                image.save('static/img/posts/' + str(latest_id) +
                            '_original.webp', optimize=True, quality=45)
                 user_id = session['user']['id']
                 date = datetime.now()
@@ -55,7 +54,7 @@ def post_lookup(post_id):
         post = c.fetchone()
         c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()
-
+        print(comments)
         return render_template('post_lookup.html', post=post, comments=comments)
 
 

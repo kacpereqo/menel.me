@@ -12,7 +12,7 @@
             <li>
                 <h3><a href="{{url_for('post_app.post_lookup', post_id = post[0])}}">{{post[1]}}</a></h3>
             </li>
-            <li>Dodano przez:<a href="{{url_for('user', nick = post[1])}}">{{post[1]}}</a></li>
+            <li>Dodano przez:<a href="{{url_for('user_app.user', nick = post[1])}}">{{post[1]}}</a></li>
             <li>Dodano: {{post[2][:-7]}}</li>
         </ul>
         <img src="static\img\posts\{{post[3]}}_small.webp">

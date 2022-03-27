@@ -7,7 +7,7 @@
 {% block content %}
 <div class="post_lookup">
     <div id="credits">
-        <p><a href="{{url_for('user',nick=post[0])}}">{{post[0]}}</a></p>
+        <p><a href="{{url_for('user_app.user',nick=post[0])}}">{{post[0]}}</a></p>
         <p>{{post[1][:-7]}}
     </div>
     <h2>{{post[2]}}</h2>
@@ -28,7 +28,7 @@
     <textarea disabled rows="2" cols="55">Zalguj się aby zkomentować</textarea>
     <input type="submit" disabled value="Skomentuj">
     {% else %}
-    <form action="{{url_for('post_app.comment', post_id = post[0])}}" method="post">
+    <form action="{{url_for('post_app.comment', post_id = post[5])}}" method="post">
         <textarea name="comment" rows="2" cols="55"></textarea>
         <input type="submit" value="Skomentuj">
     </form>
@@ -36,10 +36,10 @@
     <div id="comments">
         {% for comment in comments %}
         <div class="comment">
-            <div id="author"><a href="{{url_for('user', nick = comment[0])}}">{{comment[0]}}</a></div>
-            <div id="date">{{comment[1][:-7]}}</div>
+            <div id="author"><a href="{{url_for('user_app.user', nick = comment[0])}}">{{comment[0]}}</a></div>
+            <div id="date">{{comment[1]}}</div>
             <p>{{comment[2]}}</p>
         </div>
         {% endfor %}
     </div>
-    {% endblock %}
+{% endblock %}

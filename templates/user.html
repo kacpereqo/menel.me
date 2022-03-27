@@ -13,15 +13,4 @@ password:{{password}}
 <br>
 id: {{id}}
 <br>
-{% for post in posts %}
-<div class="post">
-    <ul>
-        <li><h3><a href="{{url_for('post_app.post_lookup', post_id = post[0])}}">{{post[1]}}</a></h3></li>
-        <li>Dodano przez:<a href="{{url_for('user', nick = post[9])}}">{{post[9]}}</a></li>
-        <li>Dodano: {{post[7][:-7]}}</li>
-    </ul>
-    <img src="data:image/jpg;base64,{{post[3]}}">
-</div>
-
-{% endfor %}
 {% endblock %}

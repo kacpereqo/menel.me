@@ -3,6 +3,7 @@ html {
     padding: 0;
     background-image: url("../img/ui/background.webp");
     background-color: #272727;
+    object-fit: cover;
     background-repeat: repeat-x;
     font-family: arial, helvetica, sans-serif;
 }

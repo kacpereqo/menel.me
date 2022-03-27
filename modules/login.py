@@ -46,7 +46,7 @@ def login():
                     session['user']['email'] = email
                     session['user']['id'] = data[0]
                     flash(f'Zalogowano pomyślnie jako {data[1]}')
-                    return redirect(url_for('user', nick=data[1]))
+                    return redirect(url_for('index'))
 
                 if isValid == False:
                     flash(f'Nieprawidłowe hasło!')
