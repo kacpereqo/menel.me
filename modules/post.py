@@ -25,8 +25,12 @@ def create():
 
                 image.resize((130, 100), Image.ANTIALIAS).save(
                     'data/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
+
+                # watermark = Image.open('static/img/meneletv.webp')
+                # image.paste(watermark, (0, 0), watermark)
+
                 image.resize((473, 600), Image.ANTIALIAS).save(
-                    'data/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=45)
+                    'data/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=65) # a jebnijmy lepsza jakosc co nam szkodzi B)
                 image.save('data/img/posts/' + str(latest_id) +
                            '_original.webp', optimize=True, quality=45)
                 user_id = session['user']['id']
