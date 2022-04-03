@@ -1,26 +1,31 @@
 # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
+from concurrent.futures import thread
 from urllib import response
-from flask import Flask, make_response, render_template, request, redirect, url_for, session, flash
-# from flask_caching import Cache
+from flask import Flask, make_response, render_template
 from modules.utils import config, get_conn
-from datetime import datetime, timedelta
-import base64
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+
 app = config(Flask(__name__))
 
-
+@app.before_request
+def before_request_func():
+    conn = get_conn()
+    c = conn.cursor()
+    c.execute("SELECT posts.id ,posts.img_id FROM posts ORDER BY RANDOM() LIMIT 1")
+    post = c.fetchone()
+    app.jinja_env.globals.update(post=post)
+    
 @app.route('/')
 def index():
     conn = get_conn()
     c = conn.cursor()
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
+    # get random post
+    
     response = make_response(render_template('index.html', posts=posts))
     return response
 
-
 # +48 69 69 69 69 call me later <3 :3
-
 
 if __name__ == '__main__':
     app.run(debug=True)

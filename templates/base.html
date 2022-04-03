@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-    <script type="text/javascrip" src="{{ url_for('static',filename='/js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/main.js') }}"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,7 +47,7 @@
 
             <ul id="losowy">
                 <li><img src=" /static/img/ui/losowy.webp"></li>
-                <li><a href="#">Losowy film</a></li>
+                <li><a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img src="static\img\posts\{{post[1]}}_small.webp"></a></li>
             </ul>
 
             <ul id="hity">
