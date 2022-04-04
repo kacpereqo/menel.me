@@ -20,7 +20,6 @@ def index():
     c = conn.cursor()
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
-    # get random post
     
     response = make_response(render_template('index.html', posts=posts))
     return response
