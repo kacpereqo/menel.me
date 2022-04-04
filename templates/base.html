@@ -47,19 +47,17 @@
 
             <ul id="losowy">
                 <li><img src=" /static/img/ui/losowy.webp"></li>
-                <li><a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img src="static\img\posts\{{post[1]}}_small.webp"></a></li>
+                <li><a href="{{url_for('post_app.post_lookup', post_id = random[0])}}"><img src="/static/img/posts/{{random[1]}}_small.webp"></a></li>
             </ul>
 
             <ul id="hity">
                 <li><img src=" /static/img/ui/hity.webp"></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
-                <li><a href="#">sex</a></li>
+                {% for top_post in top_posts %}
+                <li class = "hit">
+                        <div id = "title"><a href="{{url_for('post_app.post_lookup', post_id = top_post[0])}}">{{top_post[2]}}</a> </div>
+                        <div id = "views">{{top_post[1]}}</div>
+                </li>
+                {% endfor %}
             </ul>
         </div>
         <div id="mid-bar">
@@ -74,7 +72,7 @@
             </ul>
 
             <ul id="logowanie">
-                {% if session|length < 1 %} <form action="{{url_for('login_app.login')}}" method="POST">
+                {% if session['user']|length < 1 %} <form action="{{url_for('login_app.login')}}" method="POST">
                     <li><img src=" /static/img/ui/logowanie.webp"></li>
                     <li> <span>E-mail</span> <input type="text" name="eml"></li>
                     <li> <span>Hasło</span> <input type="text" name="pswrd"></li>

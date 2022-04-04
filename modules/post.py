@@ -9,6 +9,25 @@ post_app = Blueprint('post_app', __name__, static_folder="../static",
                      template_folder="../templates")
 
 
+@post_app.before_request
+def before_request_func():
+    conn = get_conn()
+    c = conn.cursor()
+
+    #TODO:
+    # trzeba se jebnąc tutaj zeby nie robilo tych requestow za kazdym razem tylko np co 5 min 
+
+    # if session.get('top_posts') is None:
+    c.execute("SELECT posts.id ,posts.views, posts.title FROM posts ORDER BY posts.views DESC LIMIT 10")
+    top_posts = c.fetchall()
+        # session['top_posts'] = top_posts
+
+    c.execute("SELECT posts.id ,posts.img_id FROM posts ORDER BY RANDOM() LIMIT 1")
+    post = c.fetchone()
+    current_app.jinja_env.globals.update(random=post, top_posts=top_posts)
+    
+
+
 @post_app.route("/create", methods=['POST', 'GET'])
 def create():
     with current_app.app_context():
@@ -49,8 +68,10 @@ def post_lookup(post_id):
     with current_app.app_context():
         conn = get_conn()
         c = conn.cursor()
+        c.execute("UPDATE posts SET views = views + 1 WHERE id = ?", (post_id,))
+        conn.commit()
         c.execute(
-            "SELECT users.nick, posts.date, posts.title, posts.img_id, posts.description, posts.id, posts.upvotes,posts.downvotes   FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
+            "SELECT users.nick, posts.date, posts.title, posts.img_id, posts.description, posts.id, posts.upvotes,posts.downvotes, posts.views   FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
         post = c.fetchone()
         c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()

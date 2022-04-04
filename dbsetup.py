@@ -1,6 +1,6 @@
 # sqlite 3 database setup
 import sqlite3
-conn = sqlite3.connect('data/db/database.sqlite')
+conn = sqlite3.connect('db/database.sqlite')
 c = conn.cursor()
 
 # c.execute("""CREATE TABLE users (
@@ -68,8 +68,13 @@ c = conn.cursor()
 #     post_id integer,
 #     comment_id integer)""")
 # chnage posts column content to img_id
+# c.execute("""ALTER TABLE posts
+# RENAME COLUMN content TO img_id""")
+
+#add views column to posts
 c.execute("""ALTER TABLE posts
-RENAME COLUMN content TO img_id""")
+ADD COLUMN views integer DEFAULT 0""")
+
 
 # c.execute("DELETE FROM posts")
 # conn.commit()

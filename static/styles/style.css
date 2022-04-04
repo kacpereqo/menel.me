@@ -252,3 +252,25 @@ textarea{
 input:invalid {
     box-shadow: 0 0 5px 1px red;
   }
+.hit{
+    background-color: #f2f2f2;
+    display: block;
+    position: relative;
+    width: 165px;
+    margin-bottom: 10px;
+    padding: 3px 0 3px 0;
+}
+.hit #title{
+    margin-left: 10px;
+    font-size: 15px;
+    text-align: left;
+    width: 110px;
+}
+
+.hit #views{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 13px;
+}

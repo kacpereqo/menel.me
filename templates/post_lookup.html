@@ -15,12 +15,14 @@
     <p>{{post[4]}}</p>
     <div id="rates">
         {% if session|length < 1 %}
-        <p>{{post[5]}}<a href="#">+</a></p>
-        <p>{{post[6]}}<a href="#">-</a></p>
+        <p>{{post[6]}}<a href="#">+</a></p>
+        <p>{{post[7]}}<a href="#">-</a></p>
         <p style="font-size:11px;">Zaloguj się aby zjabolować</p>
+        <p>{{post[8]}} wyswietleń</p>
         {% else %}
         <p>{{post[6]}}<a href="{{url_for('post_app.upvote',post_id = post[5])}}">+</a></p>
         <p>{{post[7]}}<a href="{{url_for('post_app.downvote',post_id = post[5])}}">-</a></p>
+        <p>{{post[8]}} wyswietleń</p>
         {% endif %}
     </div>
 </div>
