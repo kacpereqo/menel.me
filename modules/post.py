@@ -36,26 +36,53 @@ def create():
                 title = request.form['title']
                 description = request.form['description']
                 content = request.files['file'].stream.read()
-                # print(content)
-                image = Image.open(io.BytesIO(content)).convert('RGB')
-                latest_id = get_conn().execute(
-                    "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
-                image.resize((130, 100), Image.ANTIALIAS).save(
-                    'static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
-                image.resize((473, 600), Image.ANTIALIAS).save(
-                    'static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=45)
-                image.save('static/img/posts/' + str(latest_id) +
-                           '_original.webp', optimize=True, quality=45)
-                user_id = session['user']['id']
-                date = datetime.now()
+                if len(content) < 1:
+                    flash("Plik nie może być pusty")
+                    return redirect(url_for('post_app.create'))
+                if len(title) < 1:
+                    flash("Tytuł nie może być pusty")
+                    return redirect(url_for('post_app.create'))
+                if len(description) < 1:
+                    flash("Opis nie może być pusty")
+                    return redirect(url_for('post_app.create'))
 
                 conn = get_conn()
                 c = conn.cursor()
 
-                c.execute("INSERT INTO posts (title, description, img_id, user_id, date)VALUES (?, ?, ?, ?, ?)",
-                          (title, description, latest_id, user_id, date))
-                conn.commit()
+                c.execute("SELECT title FROM posts WHERE title = ?", (title,))
+
+                if c.fetchone() is not None:
+                    flash("Post z taką nazwą już istnieje!")
+                    return redirect(url_for('post_app.create'))
+
+                if request.form['file_type'] == "zdjecie":
+                    try:
+                        image = Image.open(io.BytesIO(content)).convert('RGB')
+                    except:
+                        flash("Niepoprawny format obrazka")
+                        return redirect(url_for('post_app.create'))
+
+                    latest_id = get_conn().execute(
+                        "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
+
+                    image.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
+                    image.save('static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=60) # kurwa w cs poszedlem grac
+                    image.save('static/img/posts/' + str(latest_id) + '_original.webp', optimize=True, quality=60) # po chui jest large i original?
+                    user_id = session['user']['id']
+                    date = datetime.now()
+
+                    conn = get_conn()
+                    c = conn.cursor()
+
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date)VALUES (?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date))
+                    conn.commit()
+
+                if request.form["file_type"] == "film":
+                    # tak
+                    pass
+
                 flash("Dodano post!")
                 return redirect(url_for('index'))
             return render_template('create.html')

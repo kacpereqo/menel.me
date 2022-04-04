@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+<div id="avatarowanie">
+    <form action="#" method="post" enctype="multipart/form-data">
+        Avatar powinien być w formacie .jpg, .png, ważyć mniej niż 1MB i wymiary conajmniej 128x128.
+        <div class="rejestracja-field">
+            <label for="file">plik</label>
+            <input name="file" type="file">
+        </div>
+        <input type="submit" id="avatar-button" value="Prześlij">
+        
+    </form>
+</div>
+{% endblock %}

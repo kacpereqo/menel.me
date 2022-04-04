@@ -15,8 +15,36 @@
             <label for="description">Opis</label>
             <input name="description" type="text">
         </div>
+        <div>
+            <input type="checkbox" id="zdjecie" name="file_type" value="zdjecie"  onclick="return Validate();">
+            <label for="zdjecie">focia</label>
+            <br />
+            <input type="checkbox" id="film" name="file_type" value="film" onclick="return Validate();">
+            <label for="film">wideło</label>
+        <script type="text/javascript">  
+            function Validate()  
+            {  
+                // kurwa to trzeba wrzucic do statica xdd
+                var checkboxes = document.getElementsByName("file_type");  
+                var numberOfCheckedItems = 0;  
+                for(var i = 0; i < checkboxes.length; i++)  
+                {  
+                    if(checkboxes[i].checked)  
+                        numberOfCheckedItems++;  
+                }  
+                if(numberOfCheckedItems > 1)  
+                {  
+                    checkboxes.forEach(element => {
+                        element.checked = false;
+                    });
+                    alert("Możesz wybrać tylko jeden format pliku!");  
+                    return false;  
+                }  
+            }  
+            </script>
+        </div>
         <div class="rejestracja-field">
-            <label for="file">zdjecie</label>
+            <label for="file">plik</label>
             <input name="file" type="file">
         </div>
         <div class="rejestracja-field">
