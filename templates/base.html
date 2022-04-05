@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+    <script src="https://kit.fontawesome.com/7043ebcb81.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/main.js') }}"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +32,7 @@
                 <li><img src=" /static/img/ui/menu.webp"></li>
                 <li><a href="/">Strona główna</a></li>
                 <li><a href="#">Forum</a></li>
-                <li><a href="#">Kontakt</a></li>
+                <li><a href="{{url_for('kontakt')}}">Kontakt</a></li>
                 <li><a href="#">Filmy Online</a></li>
             </ul>
 

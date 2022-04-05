@@ -1,6 +1,6 @@
 from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
 from concurrent.futures import thread
-from flask import Flask, current_app, make_response, render_template, session
+from flask import Flask, current_app, render_template
 from modules.utils import config, get_conn
 
 app = config(Flask(__name__))
@@ -29,6 +29,10 @@ def index():
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
     return render_template('index.html', posts=posts)
+
+@app.route('/kontakt')
+def kontakt():
+    return render_template('kontakt.html')
 
 # +48 69 69 69 69 call me later <3 :3
 

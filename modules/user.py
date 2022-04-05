@@ -60,7 +60,7 @@ def change_avatar():
             if request.method == 'POST':
                 user_id = session['user']['id']
                 file = request.files['file'].stream.read()
-
+                
                 avatar = Image.open(io.BytesIO(file)).convert('RGB')
                 avatar.resize((128, 128), Image.LANCZOS).save('static/img/avatars/' + str(user_id) + '.webp', optimize=True, quality=30)
              
