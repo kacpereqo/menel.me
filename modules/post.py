@@ -27,7 +27,6 @@ def before_request_func():
     current_app.jinja_env.globals.update(random=post, top_posts=top_posts)
     
 
-
 @post_app.route("/create", methods=['POST', 'GET'])
 def create():
     with current_app.app_context():
@@ -148,3 +147,4 @@ def comment(post_id):
             return render_template('comment.html', post_id=post_id)
         else:
             return redirect(url_for('index'))
+

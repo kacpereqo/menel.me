@@ -68,8 +68,10 @@
         <div id="right-bar">
             <ul id="szukaj">
                 <li><img src=" /static/img/ui/szukaj.webp"></li>
-                <li><input type="text"></li>
-                <li><input type="submit" value="Search"></li>
+                <form action="{{url_for('search')}}" method="POST">
+                    <input type="text" name="query" placeholder="Szukaj...">
+                    <input type="submit" value="Szukaj">
+                </form>
             </ul>
 
             <ul id="logowanie">

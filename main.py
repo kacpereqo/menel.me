@@ -1,6 +1,6 @@
 from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
 from concurrent.futures import thread
-from flask import Flask, current_app, render_template
+from flask import Flask, current_app, render_template, request
 from modules.utils import config, get_conn
 
 app = config(Flask(__name__))
@@ -27,6 +27,15 @@ def index():
     conn = get_conn()
     c = conn.cursor()
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
+    posts = c.fetchall()
+    return render_template('index.html', posts=posts)
+
+@app.route('/search', methods=['POST'])
+def search():
+    conn = get_conn()
+    c = conn.cursor()
+    q = request.form['query']
+    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
     posts = c.fetchall()
     return render_template('index.html', posts=posts)
 
