@@ -26,7 +26,7 @@ def before_request_func():
 def index():
     conn = get_conn()
     c = conn.cursor()
-    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
+    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
     posts = c.fetchall()
     return render_template('index.html', posts=posts)
 

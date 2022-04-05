@@ -68,6 +68,12 @@ def create():
                     image.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
                     image.save('static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=60) # kurwa w cs poszedlem grac
                     image.save('static/img/posts/' + str(latest_id) + '_original.webp', optimize=True, quality=60) # po chui jest large i original?
+                    # guwniarzu po to że huj wiem co robi ale nie wiem co to jest, ale działa, ale nie wiem jak to zrobić lepiej, ~github copilot
+
+                    # how to find grilfriend
+                    # c.execute("SELECT id FROM users WHERE username = ?", (session['user'],))
+                    # user_id = c.fetchone()[0]
+                
                     user_id = session['user']['id']
                     date = datetime.now()
 
