@@ -5,13 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<img src="{{avatar}}" />
-nick:{{nick}}
-<br>
-email:{{email}}
-<br>
-password:{{password}}
-<br>
-id: {{id}}
-<br>
+<div class="wrap">
+    
+    <div class="profil">
+        <img src="{{avatar}}" class="avatar-img" />
+            nick:{{nick}}
+            <br>
+            email:{{email}}
+            <br>
+            password:{{password}}
+            <br>
+            id: {{id}}
+            <br>
+
+    </div>
+</div>
 {% endblock %}
