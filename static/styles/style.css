@@ -45,7 +45,7 @@ html {
     width: 58%;
     margin: 0 10px 0 10px;
     text-align: justify;
-    height: 1248px;
+    height: 1245px;
     overflow: hidden;
 }
 
@@ -54,7 +54,7 @@ html {
     float: left;
     width: 498px;
     text-align: justify;
-    height: 1058px;
+    height: 1158px;
     overflow: hidden;
 }
 
@@ -85,9 +85,6 @@ ul span {
 }
 
 #tagi {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     border-top: 2px solid #A8A8A8;
     width: 498px;
     height: 178px;
@@ -303,4 +300,9 @@ input:invalid {
 }
 #kontakt li i{
     font-size: 32px;
+}
+#move-bar{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
 }

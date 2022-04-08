@@ -18,12 +18,28 @@
         </ul>
         <img src="static\img\posts\{{post[3]}}_small.webp">
         </div>
-        
     {% endfor %}
+    <div id="move-bar">
+        <a href="{{url_for('index', page = page-1)}}" > <b><</b></a>
+        {% for i in range(page-2,page+2) %}
+        {% if i==page %}
+        <b>{{i}}</b>
+
+        {% elif i>0 and i<posts_count//7+1%}
+        <a href="{{url_for('index', page = i)}}">{{i}}</a>
+        {% endif %}
+        
+        {% endfor %}
+        {% if page<posts_count//7+1 %}
+        ...<a href="{{url_for('index', page = posts_count//7+1)}}">{{posts_count//7+1}}</a>
+        {% endif %}
+        <a href="{{url_for('index', page = page+1)}}" > <b>></b></a>
+    </div>  
 </div>
 
 <div id=" tagi">
-        sex
+        sex,ad,as,da,sd,asd,<br>
+        asdasd
     </div>
 
     {% endblock %}

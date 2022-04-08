@@ -21,14 +21,20 @@ def before_request_func():
     c.execute("SELECT posts.id ,posts.img_id FROM posts ORDER BY RANDOM() LIMIT 1")
     post = c.fetchone()
     current_app.jinja_env.globals.update(random=post, top_posts=top_posts)
-    
-@app.route('/')
-def index():
+
+@app.route('/')    
+@app.route('/<int:page>')
+def index(page=1):
+    if page < 1:
+        page = 1
     conn = get_conn()
     c = conn.cursor()
-    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 10")
+    c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 7 OFFSET {(page-1)*7}")
     posts = c.fetchall()
-    return render_template('index.html', posts=posts)
+    c.execute("SELECT COUNT(*) FROM posts")
+    posts_count = c.fetchone()[0]
+    print(len(posts))
+    return render_template('index.html', posts=posts, page=page, posts_count=posts_count)
 
 @app.route('/search', methods=['POST'])
 def search():
