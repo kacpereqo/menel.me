@@ -6,6 +6,8 @@ from flask import flash, render_template, request, redirect, url_for, session, c
 from modules.utils import get_conn
 import bcrypt
 import validators
+from datetime import datetime, time
+from pytz import timezone, all_timezones
 
 login_app = Blueprint('login_app', __name__, static_folder="../static",
                       template_folder="../templates")
@@ -50,6 +52,10 @@ def login():
             else:
                 isValid = bcrypt.checkpw(password.encode('utf-8'), data[2].encode('utf-8'))
 
+                if isValid == False:
+                    flash(f'Nieprawidłowe hasło!')
+                    return redirect(url_for('index'))
+
                 if int(data[4]) == 0 and isValid:
                     if len(data[5]) > 1:
                         flash(f"Konto zablokowane!\n{data[5]}")
@@ -57,13 +63,17 @@ def login():
                         flash(f'Konto nie zostało aktywowane!') 
                     return redirect(url_for('index'))
 
-                token = secrets.token_urlsafe(16)
-                c.execute("UPDATE users SET token = ? WHERE id = ?", (token, data[0]))
-                conn.commit()
-
-                print(token)
-
                 if int(data[4]) == 1 and isValid:
+
+                    now = datetime.now().astimezone(timezone('Europe/Warsaw'))
+                    formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+
+                    token = secrets.token_urlsafe(16)
+                    c.execute("UPDATE users SET token = ? WHERE id = ?", (token, data[0]))
+                    conn.commit()
+                    c.execute("UPDATE users SET last_login = ? WHERE id = ?", (formatted_date, data[0]))
+                    conn.commit()
+
                     session['user'] = {}
                     session['user']['nick'] = data[1]
                     session['user']['password'] = data[2]
@@ -72,10 +82,7 @@ def login():
                     session.permanent = True
                     flash(f'Zalogowano pomyślnie jako {data[1]}')
                     return redirect(url_for('index'))
-
-                if isValid == False:
-                    flash(f'Nieprawidłowe hasło!')
-                    return redirect(url_for('index'))
+                
         return redirect(url_for('index'))
 
 
@@ -142,8 +149,11 @@ def register():
             password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             password = password.decode('utf-8')
 
-            c.execute("INSERT INTO users (nick, password, email, active, reason, token) VALUES (?, ?, ?, ?, ?, ?)",
-                      (nick, password, email, active, reason, token))
+            now = datetime.now().astimezone(timezone('Europe/Warsaw'))
+            formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+
+            c.execute("INSERT INTO users (nick, password, email, active, reason, token, created) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                      (nick, password, email, active, reason, token, formatted_date))
             conn.commit()
 
             flash("Zarejestrowano pomyślnie! Zweryfikuj swoje konto")

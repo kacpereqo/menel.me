@@ -60,9 +60,20 @@ def change_avatar():
                 user_id = session['user']['id']
                 content = request.files['file'].stream.read()
                 
-                avatar = Image.open(io.BytesIO(content)).convert('RGB')
+                try:
+                    avatar = Image.open(io.BytesIO(content)).convert('RGB')
+                except:
+                    flash("Niepoprawny format pliku!")
+                    return render_template('change_avatar.html')
+
+                if avatar.size[0] < 128 or avatar.size[1] < 128:
+                    flash("Za mały rozmiar zdjęcia!")
+                    return redirect(url_for('user_app.change_avatar'))
+
                 avatar.resize((128, 128), Image.LANCZOS).save('static/img/avatars/' + str(user_id) + '.webp', optimize=True, quality=30)
-             
+                flash("Avatar został zmieniony!")
+                return redirect(url_for('user_app.user', nick=session['user']['nick']))
             return render_template('change_avatar.html')
         else:
+            flash("Musisz być zalogowany!")
             return redirect(url_for('index'))

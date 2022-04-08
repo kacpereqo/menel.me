@@ -86,6 +86,10 @@ c = conn.cursor()
 # conn.commit()
 
 # add column upvoted bool
-c.execute("""ALTER TABLE voted
-# ADD COLUMN upvoted boolean NOT NULL""")
+# c.execute("""ALTER TABLE voted
+# # ADD COLUMN upvoted boolean NOT NULL""")
+
+# c.execute("""ALTER TABLE users ADD COLUMN created date""")
+# c.execute("""ALTER TABLE users ADD COLUMN last_login date""")
+
 conn.commit()

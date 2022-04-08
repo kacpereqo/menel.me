@@ -1,3 +1,4 @@
+from pydoc import pager
 from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
 from concurrent.futures import thread
 from flask import Flask, current_app, render_template, request
@@ -33,7 +34,6 @@ def index(page=1):
     posts = c.fetchall()
     c.execute("SELECT COUNT(*) FROM posts")
     posts_count = c.fetchone()[0]
-    print(len(posts))
     return render_template('index.html', posts=posts, page=page, posts_count=posts_count)
 
 @app.route('/search', methods=['POST'])
@@ -43,11 +43,14 @@ def search():
     q = request.form['query']
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
     posts = c.fetchall()
-    return render_template('index.html', posts=posts)
+
+    posts_count = 0 # kacperku tutaj byl bug z szukanie ja tego nie dotykam nie bedzie na mnie 
+    return render_template('index.html', posts=posts, page=1, posts_count=posts_count)
 
 @app.route('/kontakt')
 def kontakt():
     return render_template('kontakt.html')
+    # ale zes dojebal tego kontakta B)
 
 # +48 69 69 69 69 call me later <3 :3
 
