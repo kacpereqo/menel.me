@@ -39,7 +39,7 @@
         {% for comment in comments %}
         <div class="comment">
             <div id="author"><a href="{{url_for('user_app.user', nick = comment[0])}}">{{comment[0]}}</a></div>
-            <div id="date">{{comment[1]}}</div>
+            <div id="date">{{comment[1][:-7]}}</div>
             <p>{{comment[2]}}</p>
         </div>
         {% endfor %}

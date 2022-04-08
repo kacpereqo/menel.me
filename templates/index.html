@@ -14,7 +14,7 @@
             </li>
             <li>Dodano przez:<a href="{{url_for('user_app.user', nick = post[1])}}">{{post[1]}}</a></li>
             <li>Dodano: {{post[2][:-7]}}</li>
-            <li>{{post[6]}}+ <b>•</b> {{post[7]}}- <b>•</b> {{post[5]}} wyświetleń</li>
+            <li id="stats">{{post[6]}}+ {{post[7]}}- {{post[5]}} wyświetleń</li>
         </ul>
         <img src="static\img\posts\{{post[3]}}_small.webp">
         </div>

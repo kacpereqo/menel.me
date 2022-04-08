@@ -144,7 +144,9 @@ ul span {
     left: 100px;
     top: 35px;
 }
-
+.post #stats {
+    font-size: 12px;
+}
 .post img {
     width: 130px;
     height: 100px;

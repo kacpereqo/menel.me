@@ -72,9 +72,20 @@ c = conn.cursor()
 # RENAME COLUMN content TO img_id""")
 
 #add views column to posts
-c.execute("""ALTER TABLE posts
-ADD COLUMN views integer DEFAULT 0""")
+# c.execute("""ALTER TABLE posts
+# ADD COLUMN views integer DEFAULT 0""")
 
 
-# c.execute("DELETE FROM posts")
+# # c.execute("DELETE FROM posts")
+# # conn.commit()
+
+
+# delete column comment_id from voted
+# c.execute("""ALTER TABLE voted
+# DROP COLUMN comment_id""")
 # conn.commit()
+
+# add column upvoted bool
+c.execute("""ALTER TABLE voted
+# ADD COLUMN upvoted boolean NOT NULL""")
+conn.commit()
