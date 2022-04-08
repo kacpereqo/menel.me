@@ -57,6 +57,12 @@ def login():
                         flash(f'Konto nie zostało aktywowane!') 
                     return redirect(url_for('index'))
 
+                token = secrets.token_urlsafe(16)
+                c.execute("UPDATE users SET token = ? WHERE id = ?", (token, data[0]))
+                conn.commit()
+
+                print(token)
+
                 if int(data[4]) == 1 and isValid:
                     session['user'] = {}
                     session['user']['nick'] = data[1]
@@ -90,7 +96,7 @@ def register():
             token = secrets.token_urlsafe(16)
             reason = ""
 
-            if len(nick) < 3 and len(nick) > 20:
+            if len(nick) < 3 or len(nick) > 20:
                 flash(f'Nick musi mieć od 3 do 20 znaków!')
                 return render_template('register.html', reason=reason)
 
@@ -103,7 +109,7 @@ def register():
                 flash(f'Nick nie może zawierać znaków specjalnych!')
                 return render_template('register.html', reason=reason)   
 
-            if len(password) < 10 and len(password) > 32:
+            if len(password) < 10 or len(password) > 32:
                 flash(f'Hasło musi mieć od 10 do 32 znaków!')
                 return render_template('register.html', reason=reason)    
 
@@ -160,10 +166,14 @@ def verify():
 
     # jest problem ze jak gosciu ma bana to moze sie odbanowac linkiem aktywacyjnym xd to nizej ma to blokowac ale cos nie dziala potem sie to naprawi xd
 
+    # is_banned = False
+
+    # print("reason",c.fetchone()[1])
+
     # try:
     #     if len(c.fetchone()[1]) > 1:
     #         is_banned = True
-    # finally:
+    # except:
     #     is_banned = False
 
     # if is_banned:
@@ -230,18 +240,24 @@ def forgotten_password():
                 password = request.form['pswrd']
                 password_second = request.form['pswrd-r']   
 
+                token = secrets.token_urlsafe(16)
+
+                if password == "" or password_second == "":
+                    flash(f'Hasło nie może być puste!')
+                    return render_template('forgotten_password.html', email=email, token=token)
+
                 if password != password_second:
                     flash(f'Hasła nie są identyczne!')
-                    return render_template('register.html')
+                    return render_template('forgotten_password.html')
 
-                if len(password) < 10 and len(password) > 32:
+                if len(password) < 10 or len(password) > 32:
                     flash(f'Hasło musi mieć od 10 do 32 znaków!')
-                    return render_template('register.html') 
+                    return render_template('forgotten_password.html') 
 
                 password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
                 password = password.decode('utf-8')
 
-                c.execute("UPDATE users SET password = ? WHERE email = ?", (password, email))
+                c.execute("UPDATE users SET password = ?, token = ? WHERE email = ?", (password, token, email))
 
                 conn.commit()
                 flash("Hasło zostało zmienione! Możesz się teraz zalogować")

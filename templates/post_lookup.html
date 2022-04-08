@@ -11,7 +11,16 @@
         <p>{{post[1][:-7]}}
     </div>
     <h2>{{post[2]}}</h2>
+    {% if post[9] %}
+
+    <video width="320" height="240" controls>
+        <source src="/static/img/posts_video/{{post[3]}}.webm" type="video/mp4">
+      </video>
+
+    {% else %}
     <img id="lookup_img" src="/static/img/posts/{{post[3]}}_large.webp">
+
+    {% endif %}
     <p>{{post[4]}}</p>
     <div id="rates">
         {% if session|length < 1 %}

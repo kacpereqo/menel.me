@@ -19,4 +19,5 @@ def config(app):
         app.register_blueprint(login_app)
         app.register_blueprint(post_app)
         app.register_blueprint(user_app)
+        app.config['MAX_CONTENT_LENGTH'] = 32 * 1000 * 1000
     return app

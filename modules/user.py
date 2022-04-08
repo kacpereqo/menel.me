@@ -45,13 +45,12 @@ def user(nick):
         posts = c.fetchall()
 
         if os.path.isfile(os.path.join(current_app.root_path, 'static/img/avatars/' + str(user[0]) + '.webp')):
-            id = '/static/img/avatars/' + str(user[0]) + '.webp'
+            avatar_path = '/static/img/avatars/' + str(user[0]) + '.webp'
         else:
-            id = user[0]
-            id = str(id)[len(str(id)) - 1]
-            id = '/static/img/avatars_defaults/' + id + '.webp'
+            avatar_path = str(user[0])[len(str(user[0])) - 1]
+            avatar_path = '/static/img/avatars_defaults/' + avatar_path + '.webp'
 
-        return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0], posts=posts, avatar=id)
+        return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0], posts=posts, avatar=avatar_path)
 
 @user_app.route('/change_avatar/', methods=['POST', 'GET'])
 def change_avatar():
@@ -59,9 +58,9 @@ def change_avatar():
         if "user" in session:
             if request.method == 'POST':
                 user_id = session['user']['id']
-                file = request.files['file'].stream.read()
+                content = request.files['file'].stream.read()
                 
-                avatar = Image.open(io.BytesIO(file)).convert('RGB')
+                avatar = Image.open(io.BytesIO(content)).convert('RGB')
                 avatar.resize((128, 128), Image.LANCZOS).save('static/img/avatars/' + str(user_id) + '.webp', optimize=True, quality=30)
              
             return render_template('change_avatar.html')
