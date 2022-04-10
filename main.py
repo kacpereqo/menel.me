@@ -1,6 +1,4 @@
-from pydoc import pager
 from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
-from concurrent.futures import thread
 from flask import Flask, current_app, render_template, request
 from modules.utils import config, get_conn
 

@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
-from numpy import save
 from modules.utils import get_conn
 from datetime import datetime
 from PIL import Image
 import io
-import os
-import subprocess
 
 post_app = Blueprint('post_app', __name__, static_folder="../static",
                      template_folder="../templates")
@@ -103,8 +100,6 @@ def create():
                     latest_id = get_conn().execute(
                         "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
-                    
-                    
                     # pierdole to kurwa caly czas sie zapisuje a kurwa wielkosc tego jebanego filmu to kurwa 0 bajtow mam dosc
 
                     # content_raw.save('static/img/posts_video/' + str(latest_id) + '.mp4')
@@ -143,28 +138,60 @@ def post_lookup(post_id):
         post = c.fetchone()
         c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()
-        print(comments)
-        return render_template('post_lookup.html', post=post, comments=comments)
+        
+        c.execute("SELECT downvoted FROM posts_votes WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
+        voted = c.fetchone()
+        if voted is not None:
+            voted = voted[0]
 
+        return render_template('post_lookup.html', post=post, comments=comments, voted=voted)
 
 @post_app.route("/upvote/<post_id>")
-def upvote(post_id):
+@post_app.route("/upvote/<post_id>/<int:vote_type>")
+def upvote(post_id,vote_type=None):
     with current_app.app_context():
         conn = get_conn()
         c = conn.cursor()
-        c.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
-        conn.commit()
+
+        if vote_type == None:
+            c.execute("INSERT INTO posts_votes (user_id, post_id, downvoted) VALUES (?, ?, ?)", (session['user']['id'], post_id, 0))
+            c.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
+            conn.commit()
+        elif vote_type == 0:
+            c.execute("UPDATE posts SET upvotes = upvotes - 1 WHERE id = ?", (post_id,))
+            c.execute("DELETE FROM posts_votes WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
+            conn.commit()
+        elif vote_type == 1:
+            c.execute("UPDATE posts SET upvotes = upvotes + 1 WHERE id = ?", (post_id,))
+            c.execute("UPDATE posts SET downvotes = downvotes - 1 WHERE id = ?", (post_id,))
+            c.execute("UPDATE posts_votes SET downvoted = 0 WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
+            conn.commit()
+        
         return redirect(url_for('post_app.post_lookup', post_id=post_id))
 
-
 @post_app.route("/downvote/<post_id>")
-def downvote(post_id):
+@post_app.route("/downvote/<post_id>/<int:vote_type>")
+def downvote(post_id,vote_type=None):
     with current_app.app_context():
         conn = get_conn()
         c = conn.cursor()
-        c.execute(
-            "UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
-        conn.commit()
+
+
+        print(vote_type,vote_type==False)
+        if vote_type == None:
+            c.execute("INSERT INTO posts_votes (user_id, post_id, downvoted) VALUES (?, ?, ?)", (session['user']['id'], post_id, 1))
+            c.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+            conn.commit()
+        elif vote_type == 0:
+            c.execute("UPDATE posts SET downvotes = downvotes + 1 WHERE id = ?", (post_id,))
+            c.execute("UPDATE posts SET upvotes = upvotes - 1 WHERE id = ?", (post_id,))
+            c.execute("UPDATE posts_votes SET downvoted = 1 WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
+            conn.commit()
+        elif vote_type == 1:
+            c.execute("UPDATE posts SET downvotes = downvotes - 1 WHERE id = ?", (post_id,))
+            c.execute("DELETE FROM posts_votes WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
+            conn.commit()
+
         return redirect(url_for('post_app.post_lookup', post_id=post_id))
 
 

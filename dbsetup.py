@@ -89,6 +89,10 @@ c = conn.cursor()
 # c.execute("""ALTER TABLE voted
 # # ADD COLUMN upvoted boolean NOT NULL""")
 
+# add column upvoted bool
+# c.execute("""ALTER TABLE posts_votes
+# ADD COLUMN downvoted boolean NOT NULL""")
+
 # c.execute("""ALTER TABLE users ADD COLUMN created date""")
 # c.execute("""ALTER TABLE users ADD COLUMN last_login date""")
 

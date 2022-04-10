@@ -15,7 +15,7 @@
 
     <video width="320" height="240" controls>
         <source src="/static/img/posts_video/{{post[3]}}.webm" type="video/mp4">
-      </video>
+    </video>
 
     {% else %}
     <img id="lookup_img" src="/static/img/posts/{{post[3]}}_large.webp">
@@ -23,20 +23,31 @@
     {% endif %}
     <p>{{post[4]}}</p>
     <div id="rates">
-        {% if session|length < 1 %}
-        <p>{{post[6]}}<a href="#">+</a></p>
-        <p>{{post[7]}}<a href="#">-</a></p>
-        <p style="font-size:11px;">Zaloguj się aby zjabolować</p>
-        <p>{{post[8]}} wyswietleń</p>
-        {% else %}
-        <p>{{post[6]}}<a href="{{url_for('post_app.upvote',post_id = post[5])}}">+</a></p>
-        <p>{{post[7]}}<a href="{{url_for('post_app.downvote',post_id = post[5])}}">-</a></p>
-        <p>{{post[8]}} wyswietleń</p>
-        {% endif %}
+        {% if session|length < 1 %} <p>{{post[6]}}<a href="#">+</a></p>
+            <p>{{post[7]}}<a href="#">-</a></p>
+            <p style="font-size:11px;">Zaloguj się aby zjabolować</p>
+            <p>{{post[8]}} wyswietleń</p>
+            {% else %}
+            {{voted}}
+            <p>{{post[6]}}<a href="{{url_for('post_app.upvote',post_id = post[5], vote_type = voted)}}">
+                {% if voted == false %}
+                <b>+</b>
+                {% else %}
+                    +
+                {% endif %}
+                </a></p>
+            <p>{{post[7]}}<a href="{{url_for('post_app.downvote',post_id = post[5], vote_type = voted)}}">
+                    {% if voted == true %}
+                    <b>-</b>
+                    {% else %}
+                        -
+                    {% endif %}
+                </a></p>
+            <p>{{post[8]}} wyswietleń</p>
+            {% endif %}
     </div>
 </div>
-{% if session|length < 1 %} 
-    <textarea disabled rows="2" cols="55">Zalguj się aby zkomentować</textarea>
+{% if session|length < 1 %} <textarea disabled rows="2" cols="55">Zalguj się aby zkomentować</textarea>
     <input type="submit" disabled value="Skomentuj">
     {% else %}
     <form action="{{url_for('post_app.comment', post_id = post[5])}}" method="post">
@@ -53,4 +64,4 @@
         </div>
         {% endfor %}
     </div>
-{% endblock %}
+    {% endblock %}

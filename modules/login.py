@@ -6,8 +6,8 @@ from flask import flash, render_template, request, redirect, url_for, session, c
 from modules.utils import get_conn
 import bcrypt
 import validators
-from datetime import datetime, time
-from pytz import timezone, all_timezones
+from datetime import datetime
+from pytz import timezone
 
 login_app = Blueprint('login_app', __name__, static_folder="../static",
                       template_folder="../templates")
