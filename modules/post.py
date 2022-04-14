@@ -4,6 +4,7 @@ from modules.utils import get_conn
 from datetime import datetime
 from PIL import Image
 import io
+import moviepy.editor as mpe
 
 post_app = Blueprint('post_app', __name__, static_folder="../static",
                      template_folder="../templates")
@@ -76,7 +77,7 @@ def create():
                     
                     i.paste(image_watermark, (i.size[0]-image_watermark.size[0]-50, i.size[1]-image_watermark.size[1]-50), image_watermark)
                 
-                    i.save('static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=60)
+                    i.save('static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=65)
 
                     # guwniarzu po to że huj wiem co robi ale nie wiem co to jest, ale działa, ale nie wiem jak to zrobić lepiej, ~github copilot
                     # dobra
@@ -100,24 +101,29 @@ def create():
                     latest_id = get_conn().execute(
                         "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
-                    # pierdole to kurwa caly czas sie zapisuje a kurwa wielkosc tego jebanego filmu to kurwa 0 bajtow mam dosc
+                    f = open("static/img/posts_video/"+str(latest_id)+".webm", "wb")
+                    f.write(content)
+                    f.close()
 
-                    # content_raw.save('static/img/posts_video/' + str(latest_id) + '.mp4')
+                    video = mpe.VideoFileClip("static/img/posts_video/"+str(latest_id)+".webm")
 
-                    # # 
-                    # # video.save('static/img/posts_video/' + str(latest_id) + '.mp4')
+                    i = Image.fromarray(video.get_frame(1)) #
+                    i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
+
+                    if len(content) > 10000000: # wieksze od 10mb to kompresja wlatuje xd
+                        print("Xd") # jebnie sie ffmpeg TODO
+
+                    is_video = True
                     
-                    # is_video = True
+                    user_id = session['user']['id']
+                    date = datetime.now()
 
-                    # user_id = session['user']['id']
-                    # date = datetime.now()
+                    conn = get_conn()
+                    c = conn.cursor()
 
-                    # conn = get_conn()
-                    # c = conn.cursor()
-
-                    # c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video)VALUES (?, ?, ?, ?, ?, ?)",
-                    #           (title, description, latest_id, user_id, date, is_video))
-                    # conn.commit()
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video)VALUES (?, ?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date, is_video))
+                    conn.commit()
 
                 flash("Dodano post!")
                 return redirect(url_for('index'))
