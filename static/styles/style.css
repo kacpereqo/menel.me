@@ -276,6 +276,7 @@ input:invalid {
     padding: 3px 0 3px 0;
 }
 .hit #title{
+    word-break: break-all;
     margin-left: 10px;
     font-size: 15px;
     text-align: left;
@@ -305,4 +306,8 @@ input:invalid {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+.vote{
+    display: inline;
 }

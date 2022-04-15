@@ -95,5 +95,11 @@ c = conn.cursor()
 
 # c.execute("""ALTER TABLE users ADD COLUMN created date""")
 # c.execute("""ALTER TABLE users ADD COLUMN last_login date""")
+# add description to users
+
+# c.execute("""ALTER TABLE users ADD COLUMN description text""")
+# add location to users
+# c.execute("""ALTER TABLE users ADD COLUMN location text""")
+
 
 conn.commit()

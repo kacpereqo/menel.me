@@ -20,7 +20,9 @@
         </div>
     {% endfor %}
     <div id="move-bar">
+        {% if page != 1 %}
         <a href="{{url_for('index', page = page-1)}}" > <b><</b></a>
+        {% endif %}
         {% for i in range(page-2,page+2) %}
         {% if i==page %}
         <b>{{i}}</b>
@@ -33,7 +35,9 @@
         {% if page<posts_count//7+1 %}
         ...<a href="{{url_for('index', page = posts_count//7+1)}}">{{posts_count//7+1}}</a>
         {% endif %}
+        {% if page != posts_count//7+1%}
         <a href="{{url_for('index', page = page+1)}}" > <b>></b></a>
+        {% endif %}
     </div>  
 </div>
 

@@ -77,3 +77,32 @@ def change_avatar():
         else:
             flash("Musisz być zalogowany!")
             return redirect(url_for('index'))
+
+@user_app.route('/settings/', methods=['POST', 'GET'])
+def settings():
+    with current_app.app_context():
+        if "user" in session:
+            if request.method == 'POST':
+                user_id = session['user']['id']
+                password = request.form['password']
+                email = request.form['email']
+
+                conn = get_conn()
+                c = conn.cursor()
+
+                c.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+                user = c.fetchone()
+
+                if user[2] != password:
+                    flash("Niepoprawne hasło!")
+                    return redirect(url_for('user_app.settings'))
+
+                c.execute("UPDATE users SET email = ? WHERE id = ?", (email, user_id))
+                conn.commit()
+
+                flash("Dane zostały zmienione!")
+                return redirect(url_for('user_app.user', nick=session['user']['nick']))
+            return render_template('settings.html')
+        else:
+            flash("Musisz być zalogowany!")
+            return redirect(url_for('index'))

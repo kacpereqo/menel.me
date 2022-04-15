@@ -28,21 +28,23 @@
             <p style="font-size:11px;">Zaloguj się aby zjabolować</p>
             <p>{{post[8]}} wyswietleń</p>
             {% else %}
-            {{voted}}
-            <p>{{post[6]}}<a href="{{url_for('post_app.upvote',post_id = post[5], vote_type = voted)}}">
+            <form id="upvote" method="post">
+                {{post[6]}}<a class="vote" onclick="submit('upvote')" href="#">
                 {% if voted == false %}
                 <b>+</b>
                 {% else %}
                     +
                 {% endif %}
-                </a></p>
-            <p>{{post[7]}}<a href="{{url_for('post_app.downvote',post_id = post[5], vote_type = voted)}}">
+                </a></form>
+            <form id="downvote" method="post">
+            {{post[7]}}
+            <a class="vote" onclick="submit('downvote')" href="#">
                     {% if voted == true %}
                     <b>-</b>
                     {% else %}
                         -
                     {% endif %}
-                </a></p>
+                </a></form>
             <p>{{post[8]}} wyswietleń</p>
             {% endif %}
     </div>
@@ -65,3 +67,5 @@
         {% endfor %}
     </div>
     {% endblock %}
+
+    

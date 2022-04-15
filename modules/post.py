@@ -139,15 +139,18 @@ def post_lookup(post_id):
         c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()
         
-        c.execute("SELECT downvoted FROM posts_votes WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
-        voted = c.fetchone()
-        if voted is not None:
-            voted = voted[0]
+        if session.get("user") is not None:
+            c.execute("SELECT downvoted FROM posts_votes WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
+            voted = c.fetchone()
+            if voted is not None:
+                voted = voted[0]
+        else:
+            voted = None
 
         return render_template('post_lookup.html', post=post, comments=comments, voted=voted)
 
-@post_app.route("/upvote/<post_id>")
-@post_app.route("/upvote/<post_id>/<int:vote_type>")
+@post_app.route("/upvote/<post_id>", methods=['POST'])
+@post_app.route("/upvote/<post_id>/<int:vote_type>", methods=['POST'])
 def upvote(post_id,vote_type=None):
     with current_app.app_context():
         conn = get_conn()
@@ -169,8 +172,8 @@ def upvote(post_id,vote_type=None):
         
         return redirect(url_for('post_app.post_lookup', post_id=post_id))
 
-@post_app.route("/downvote/<post_id>")
-@post_app.route("/downvote/<post_id>/<int:vote_type>")
+@post_app.route("/downvote/<post_id>",  methods=['POST'])
+@post_app.route("/downvote/<post_id>/<int:vote_type>",  methods=['POST'])
 def downvote(post_id,vote_type=None):
     with current_app.app_context():
         conn = get_conn()
