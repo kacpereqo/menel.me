@@ -1,4 +1,3 @@
-from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
 from flask import Flask, current_app, render_template, request
 from modules.utils import config, get_conn
 
