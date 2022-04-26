@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block content %}
+<br>
 <div id="postowanie">
     <form action="#" method="post" enctype="multipart/form-data">
         <div class="rejestracja-field">
-            <label for="title">Tytół</label>
+            <label for="title">Tytuł</label>
             <input name="title" type="text">
         </div>
         <div class="rejestracja-field">
@@ -17,10 +18,12 @@
         </div>
         <div>
             <input type="checkbox" id="zdjecie" name="file_type" value="zdjecie"  onclick="return Validate();">
-            <label for="zdjecie">focia</label>
+            <label for="zdjecie">Obraz</label>
             <br />
             <input type="checkbox" id="film" name="file_type" value="film" onclick="return Validate();">
-            <label for="film">wideło</label>
+            <label for="film">Plik widjio</label>
+
+        
         <script type="text/javascript">  
             function Validate()  
             {  
@@ -43,6 +46,7 @@
             }  
             </script>
         </div>
+        <br>
         <div class="rejestracja-field">
             <label for="file">plik</label>
             <input name="file" type="file">

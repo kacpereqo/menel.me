@@ -5,14 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<div id="avatarowanie">
+<br>
+<div id="kontakt">
     <form action="#" method="post" enctype="multipart/form-data">
         Avatar powinien być w formacie .jpg, .png i posiadać wymiary co najmniej 128x128.
-        <div class="rejestracja-field">
-            <label for="file">plik</label>
+        <br>
+        <br>
+        <div class="file-field">
             <input name="file" type="file">
+            <input type="submit" id="avatar-button" value="Prześlij">
         </div>
-        <input type="submit" id="avatar-button" value="Prześlij">
+        
         
     </form>
 </div>

@@ -86,7 +86,7 @@
                     <li><a href="{{url_for('login_app.reset_password')}}">Nie pamiętam hasła</a></li>
                     </form>
                     {% else %}
-                    zalogowany jako {{session['user']['nick']}}
+                    zalogowano jako {{session['user']['nick']}}
                     <li><a href="{{url_for('user_app.user',nick = session['user']['nick'])}}">Profil</a></li>
                     <li><a href="{{url_for('user_app.settings',nick = session['user']['nick'])}}">Ustawienia</a></li>
                     <li><a href="{{url_for('post_app.create')}}">Stwórz post</a></li>

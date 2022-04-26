@@ -13,7 +13,7 @@
 
     </div>
     <div id="div2">
-        <h3>nick: {{nick}}</h3>
+        <div id="nick-profil">{{nick}}</div>
             <br>
 
             {% if banned==True %}
@@ -23,10 +23,16 @@
             {% if banned==False %}
             Ostatnio zalogowany: {{last_login}}
             <br>
-            Na menele.me od: {{last_login}}
+            Na menele.me od: {{date_created}}
             <br>
-
+            {{description}}
             {% endif %}
+
+            
     </div>
+
+    
 </div>
+
+<center><h1> nie wiem co tu mozna wrzucic ale pusto tu jak skurwysyn </h1></center>
 {% endblock %}

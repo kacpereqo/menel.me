@@ -8,28 +8,40 @@ html {
     font-family: arial, helvetica, sans-serif;
 }
 
-h3 {
-    font-size: 12px;
+#nick-profil {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+#avatarowanie {
+    font-family: helvetica, sans-serif;
+    background-color: #c0c0c0;
+    padding: 10px;
 }
 
 #profil {
     font-family: helvetica, sans-serif;
-    border: 1px solid blue;
+    background-color: #c0c0c0;
 }
 #avatar {
     display: inline-block;
     width:120px;
     height:120px;
     margin: 4px;
+    margin-left: 6px;
+    margin-top: 6px;
+    margin-bottom: 6px;
 }
 #div2 {
-    font-size: 11px;
-    margin-top: 4px;
+    padding: 5px;
+    font-size: 12px;
+    margin-top: 6px;
     vertical-align:top;
     display: inline-block;
-    width:350px;
-    height:120px;
-    border: 1px solid green;
+    width:320px;
+    height:110px;
+    
 }
 
 #container {
@@ -129,6 +141,16 @@ ul span {
     margin: auto;
     width: 80%;
     position: relative;
+}
+
+#avatar-button {
+    cursor: pointer;
+    float: right;
+}
+
+.file-field{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .rejestracja-field {

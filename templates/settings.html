@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+<br>
+<div id ="kontakt">
+    <li><a href="/reset_password">Zmiana hasła</a></li>
+    <li><a href="/change_avatar/">Zmiana avataru</a></li>
+</div>
+
+{% endblock %}
