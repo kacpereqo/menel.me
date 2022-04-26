@@ -5,19 +5,28 @@
 {% endblock %}
 
 {% block content %}
-<div class="wrap">
+<div id="profil">
     
-    <div class="profil">
+    <div id="avatar">
         <img src="{{avatar}}" class="avatar-img" />
-            nick:{{nick}}
-            <br>
-            email:{{email}}
-            <br>
-            password:{{password}}
-            <br>
-            id: {{id}}
+            
+
+    </div>
+    <div id="div2">
+        <h3>nick: {{nick}}</h3>
             <br>
 
+            {% if banned==True %}
+            Użytkownik zbanowany: {{reason}}    
+            {% endif %}
+            
+            {% if banned==False %}
+            Ostatnio zalogowany: {{last_login}}
+            <br>
+            Na menele.me od: {{last_login}}
+            <br>
+
+            {% endif %}
     </div>
 </div>
 {% endblock %}

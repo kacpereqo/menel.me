@@ -51,6 +51,13 @@ def create():
                     flash("Opis nie może być pusty")
                     return redirect(url_for('post_app.create'))
 
+                if len(title) > 100:
+                    flash("Maksymalna ilość znaków dla tytułu to 100 znaków!")
+                    return redirect(url_for('post_app.create'))
+                if len(description) > 1000:
+                    flash("Maksymalna ilość znaków dla opisu to 1000 znaków!")
+                    return redirect(url_for('post_app.create'))
+
                 conn = get_conn()
                 c = conn.cursor()
 

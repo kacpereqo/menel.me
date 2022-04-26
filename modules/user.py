@@ -1,6 +1,7 @@
 from turtle import st
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
+from sqlalchemy import true
 from modules.utils import get_conn
 import os
 import io
@@ -50,7 +51,10 @@ def user(nick):
             avatar_path = str(user[0])[len(str(user[0])) - 1]
             avatar_path = '/static/img/avatars_defaults/' + avatar_path + '.webp'
 
-        return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0], posts=posts, avatar=avatar_path)
+        if user[4] == False:
+            return render_template('user.html', nick=user[1], banned=True, reason=user[5])
+
+        return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0], posts=posts, avatar=avatar_path, last_login=user[8], date_created=user[7],banned=False)
 
 @user_app.route('/change_avatar/', methods=['POST', 'GET'])
 def change_avatar():
