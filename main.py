@@ -3,6 +3,11 @@ from modules.utils import config, get_conn
 
 app = config(Flask(__name__))
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.before_request
 def before_request_func():
     conn = get_conn()

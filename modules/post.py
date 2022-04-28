@@ -74,6 +74,10 @@ def create():
                         flash("Niepoprawny format obrazka")
                         return redirect(url_for('post_app.create'))
 
+                    if i.size[0] < 511 or i.size[1] < 511:
+                        flash("Obrazek jest za mały")
+                        return redirect(url_for('post_app.create'))
+
                     latest_id = get_conn().execute(
                         "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 

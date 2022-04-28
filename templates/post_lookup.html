@@ -13,9 +13,9 @@
     <h2>{{post[2]}}</h2>
     {% if post[9] %}
 
-    <video width="320" height="240" controls>
-        <source src="/static/img/posts_video/{{post[3]}}.webm" type="video/mp4">
-    </video>
+    <center><video width="80%" height="80%" controls>
+            <source src="/static/img/posts_video/{{post[3]}}.webm" type="video/webm">
+        </video></center>
 
     {% else %}
     <img id="lookup_img" src="/static/img/posts/{{post[3]}}_large.webp">
@@ -30,21 +30,22 @@
             {% else %}
             <form id="upvote" method="post">
                 {{post[6]}}<a class="vote" onclick="submit('upvote')" href="#">
-                {% if voted == false %}
-                <b>+</b>
-                {% else %}
+                    {% if voted == false %}
+                    <b>+</b>
+                    {% else %}
                     +
-                {% endif %}
+                    {% endif %}
                 </a></form>
             <form id="downvote" method="post">
-            {{post[7]}}
-            <a class="vote" onclick="submit('downvote')" href="#">
+                {{post[7]}}
+                <a class="vote" onclick="submit('downvote')" href="#">
                     {% if voted == true %}
                     <b>-</b>
                     {% else %}
-                        -
+                    -
                     {% endif %}
-                </a></form>
+                </a>
+            </form>
             <p>{{post[8]}} wyswietleń</p>
             {% endif %}
     </div>
@@ -67,5 +68,3 @@
         {% endfor %}
     </div>
     {% endblock %}
-
-    
