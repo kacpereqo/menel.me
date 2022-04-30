@@ -2,6 +2,11 @@
 <html lang="pl">
 
 <head>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
     <script src="https://kit.fontawesome.com/7043ebcb81.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='js/main.js') }}"></script>
@@ -25,16 +30,15 @@
                 {% endfor %}
             </ul>
         </div>
-            {% endif %}
+        {% endif %}
         {% endwith %}
         <div id="logo"><img src="/static/img/ui/logo.webp"></div>
         <div id="left-bar">
             <ul id="menu">
                 <li><img src=" /static/img/ui/menu.webp"></li>
                 <li><a href="/">Strona główna</a></li>
-                <li><a href="#">Forum</a></li>
                 <li><a href="{{url_for('kontakt')}}">Kontakt</a></li>
-                <li><a href="#">Filmy Online</a></li>
+                <li><a href="https://pornhub.com">Discord</a></li>
             </ul>
 
             <ul id="kategorie">
@@ -49,15 +53,17 @@
 
             <ul id="losowy">
                 <li><img src=" /static/img/ui/losowy.webp"></li>
-                <li><a href="{{url_for('post_app.post_lookup', post_id = random[0])}}"><img src="/static/img/posts/{{random[1]}}_small.webp"></a></li>
+                <li><a href="{{url_for('post_app.post_lookup', post_id = random[0])}}"><img
+                            src="/static/img/posts/{{random[1]}}_small.webp"></a></li>
             </ul>
 
             <ul id="hity">
                 <li><img src=" /static/img/ui/hity.webp"></li>
                 {% for top_post in top_posts %}
-                <li class = "hit">
-                        <div id = "title"><a href="{{url_for('post_app.post_lookup', post_id = top_post[0])}}">{{top_post[2]}}</a> </div>
-                        <div id = "views">{{top_post[1]}}</div>
+                <li class="hit">
+                    <div id="title"><a
+                            href="{{url_for('post_app.post_lookup', post_id = top_post[0])}}">{{top_post[2]}}</a> </div>
+                    <div id="views">{{top_post[1]}}</div>
                 </li>
                 {% endfor %}
             </ul>
@@ -86,7 +92,7 @@
                     <li><a href="{{url_for('login_app.reset_password')}}">Nie pamiętam hasła</a></li>
                     </form>
                     {% else %}
-                    zalogowany jako {{session['user']['nick']}}
+                    zalogowano jako {{session['user']['nick']}}
                     <li><a href="{{url_for('user_app.user',nick = session['user']['nick'])}}">Profil</a></li>
                     <li><a href="{{url_for('user_app.settings',nick = session['user']['nick'])}}">Ustawienia</a></li>
                     <li><a href="{{url_for('post_app.create')}}">Stwórz post</a></li>
@@ -100,13 +106,7 @@
 
             <ul id="polecane">
                 <li><img src=" /static/img/ui/polecane.webp"></li>
-                <li><a href="#">Bajki</a></li>
-                <li><a href="#">Seriale Online</a></li>
-                <li><a href="#">Koncerty Na Żywo</a></li>
-                <li><a href="#">Śpiewaj Karaoke</a></li>
-                <li><a href="#">Fani</a></li>
-                <li><a href="#">Siłownia w Internecie</a></li>
-                <li><a href="#">Darmowe Komiksy Online</a></li>
+                <li><a href="#">Węgiel Studio</a></li>
             </ul>
 
         </div>

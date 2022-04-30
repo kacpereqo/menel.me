@@ -5,19 +5,34 @@
 {% endblock %}
 
 {% block content %}
-<div class="wrap">
+<div id="profil">
     
-    <div class="profil">
-        <div>
-            <img src="{{avatar}}" class="avatar-img"/>
-        </div>
-        <div>
-            <p>{{user[1]}}</p>
-        </div>
-        <div>
-            <p>{{user[9]}}</p>
-            <p>{{user[10]}}</p>
-        </div>
+    <div id="avatar">
+        <img src="{{avatar}}" class="avatar-img" />
+            
+
     </div>
+    <div id="div2">
+        <div id="nick-profil">{{nick}}</div>
+            <br>
+
+            {% if banned==True %}
+            Użytkownik zbanowany: {{reason}}    
+            {% endif %}
+            
+            {% if banned==False %}
+            Ostatnio zalogowany: {{last_login}}
+            <br>
+            Na menele.me od: {{date_created}}
+            <br>
+            {{description}}
+            {% endif %}
+
+            
+    </div>
+
+    
 </div>
+
+<center><h1> nie wiem co tu mozna wrzucic ale pusto tu jak skurwysyn </h1></center>
 {% endblock %}

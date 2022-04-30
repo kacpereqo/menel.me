@@ -1,9 +1,12 @@
+from asyncio import subprocess
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
 from modules.utils import get_conn
 from datetime import datetime
 from PIL import Image
+import subprocess
 import io
+import os
 import moviepy.editor as mpe
 
 post_app = Blueprint('post_app', __name__, static_folder="../static",
@@ -48,6 +51,13 @@ def create():
                     flash("Opis nie może być pusty")
                     return redirect(url_for('post_app.create'))
 
+                if len(title) > 100:
+                    flash("Maksymalna ilość znaków dla tytułu to 100 znaków!")
+                    return redirect(url_for('post_app.create'))
+                if len(description) > 1000:
+                    flash("Maksymalna ilość znaków dla opisu to 1000 znaków!")
+                    return redirect(url_for('post_app.create'))
+
                 conn = get_conn()
                 c = conn.cursor()
 
@@ -62,6 +72,10 @@ def create():
                         i = Image.open(io.BytesIO(content)).convert('RGB')
                     except:
                         flash("Niepoprawny format obrazka")
+                        return redirect(url_for('post_app.create'))
+
+                    if i.size[0] < 511 or i.size[1] < 511:
+                        flash("Obrazek jest za mały")
                         return redirect(url_for('post_app.create'))
 
                     latest_id = get_conn().execute(
@@ -101,17 +115,24 @@ def create():
                     latest_id = get_conn().execute(
                         "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
-                    f = open("static/img/posts_video/"+str(latest_id)+".webm", "wb")
+                    f = open("static/img/posts_video/"+str(latest_id)+"i.webm", "wb")
                     f.write(content)
                     f.close()
 
-                    video = mpe.VideoFileClip("static/img/posts_video/"+str(latest_id)+".webm")
+                    video = mpe.VideoFileClip("static/img/posts_video/"+str(latest_id)+"i.webm")
 
                     i = Image.fromarray(video.get_frame(1)) #
                     i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
 
-                    if len(content) > 10000000: # wieksze od 10mb to kompresja wlatuje xd
-                        print("Xd") # jebnie sie ffmpeg TODO
+                    if len(content) > 25000000: # wieksze od 25mb to kompresja wlatuje xd
+                        
+                        # print("Xd") # jebnie sie ffmpeg TODO
+
+                        subprocess.call('ffmpeg -i static/img/posts_video/'+str(latest_id)+'i.webm -vcodec libvpx -crf 55 -b:v 1M -acodec libvorbis static/img/posts_video/'+str(latest_id)+'.webm -y', shell=True)
+                        os.remove("static/img/posts_video/"+str(latest_id)+"i.webm")
+                        # os.rename("static/img/posts_video/"+str(latest_id)+"i.webm", "static/img/posts_video/"+str(latest_id)+".webm")
+                    else:
+                        os.rename("static/img/posts_video/"+str(latest_id)+"i.webm", "static/img/posts_video/"+str(latest_id)+".webm")
 
                     is_video = True
                     

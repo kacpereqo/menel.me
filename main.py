@@ -1,8 +1,12 @@
-from urllib import response # co tu to robi kurwa!?!?!?!??! xddddddddddddddddddddddddddddddddddddddddddddddddddd
 from flask import Flask, current_app, render_template, request
 from modules.utils import config, get_conn
 
 app = config(Flask(__name__))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 @app.before_request
 def before_request_func():
