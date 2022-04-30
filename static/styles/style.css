@@ -139,6 +139,11 @@ ul span {
     position: relative;
 }
 
+.profil > div{
+    float: left;
+    width: 50%;
+}
+
 .post {
     width: 100%;
     height: 130px;
@@ -311,3 +316,4 @@ input:invalid {
 .vote{
     display: inline;
 }
+

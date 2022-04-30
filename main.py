@@ -41,8 +41,9 @@ def search():
     q = request.form['query']
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
     posts = c.fetchall()
-
-    posts_count = 0 # kacperku tutaj byl bug z szukanie ja tego nie dotykam nie bedzie na mnie 
+    
+    c.execute("SELECT COUNT(*) FROM posts WHERE title like ?", ('%' + q + '%',))
+    posts_count = c.fetchone()[0] 
     return render_template('index.html', posts=posts, page=1, posts_count=posts_count)
 
 @app.route('/kontakt')

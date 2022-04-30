@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask import flash, render_template, request, redirect, url_for, session, current_app
+from flask import  render_template, current_app
 from modules.utils import get_conn
 
 admin_app = Blueprint('admin_app', __name__, static_folder="../static",
