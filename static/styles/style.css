@@ -8,42 +8,6 @@ html {
     font-family: Arial;
 }
 
-#nick-profil {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-
-#avatarowanie {
-    font-family: sans-serif, sans-serif;
-    background-color: #c0c0c0;
-    padding: 10px;
-}
-
-#profil {
-    font-family: sans-serif, sans-serif;
-    background-color: #c0c0c0;
-}
-#avatar {
-    display: inline-block;
-    width:120px;
-    height:120px;
-    margin: 4px;
-    margin-left: 6px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-#div2 {
-    padding: 5px;
-    font-size: 12px;
-    margin-top: 6px;
-    vertical-align:top;
-    display: inline-block;
-    width:320px;
-    height:110px;
-    
-}
-
 #container {
     position: relative;
     display: block;
@@ -53,6 +17,47 @@ html {
     height: 1500px;
     width: 850px;
     margin-bottom: 100px;
+}
+
+#avatar{
+    float:left;
+    width: 128px;
+    height: 128px;
+}
+
+#header{
+    background-color: #f2f2f2;
+    width: 498px;
+    height: 128px;
+}
+
+#info{
+    background-color: 8;
+    float:left;
+    margin-left: 10px;
+    margin-right: 10px;;
+    width: 350px;
+    height: 128px;
+}
+
+#info li span{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+}
+
+#info li:first-child{
+position: relative;
+font-size: 16px;
+font-weight: bold;
+}
+#info ul{
+    text-align: left;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    word-break: break-all;
 }
 
 #logo {
@@ -92,6 +97,11 @@ html {
     text-align: justify;
     height: 1158px;
     overflow: hidden;
+}
+
+#posts{
+    overflow: scroll;
+    height: 100%;
 }
 
 #postowanie {

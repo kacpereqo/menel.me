@@ -21,6 +21,6 @@ def config(app):
         app.register_blueprint(post_app)
         app.register_blueprint(user_app)
         app.register_blueprint(admin_app)
-        app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 7200
+        # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 7200
         app.config['MAX_CONTENT_LENGTH'] = 32 * 1000 * 1000
     return app

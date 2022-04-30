@@ -44,9 +44,12 @@ def user(nick):
             return redirect(url_for('index'))
 
         else:
-            # count
-            c.execute("SELECT COUNT(*) FROM posts WHERE user_id = ?", (user[0],))
-            post_count = c.fetchall()
+            c.execute(f"SELECT posts.id, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes  FROM posts where posts.user_id = ? ORDER BY posts.id", (user[0],))
+            posts = c.fetchall()
+
+            points = 0
+            for post in posts:
+                points += (post[5] - post[6])*10 + post[4]
 
             if os.path.isfile(os.path.join(current_app.root_path, 'static/img/avatars/' + str(user[0]) + '.webp')):
                 avatar_path = '/static/img/avatars/' + str(user[0]) + '.webp'
@@ -54,15 +57,11 @@ def user(nick):
                 avatar_path = str(user[0])[len(str(user[0])) - 1]
                 avatar_path = '/static/img/avatars_defaults/' + avatar_path + '.webp'
 
-        return render_template('user.html', user=user, avatar=avatar_path, post_coutn=post_count)
-
-<<<<<<< HEAD
-=======
         if user[4] == False:
             return render_template('user.html', nick=user[1], banned=True, reason=user[5])
 
-        return render_template('user.html', nick=user[1], email=user[3], password=user[2], id=user[0], posts=posts, avatar=avatar_path, last_login=user[8], date_created=user[7],banned=False)
->>>>>>> bb2d5ce20c6653b199de87b4e5ce00780f5ee7ed
+        return render_template('user.html', nick=user[1], avatar=avatar_path, last_login=user[8], date_created=user[7], banned=False, description=user[9], posts=posts,points=points)
+
 
 @user_app.route('/change_avatar/', methods=['POST', 'GET'])
 def change_avatar():
@@ -90,6 +89,14 @@ def change_avatar():
         else:
             flash("Musisz być zalogowany!")
             return redirect(url_for('index'))
+
+# @user_app.route('/change_description/', methods=['POST', 'GET'])
+# def change_description():
+#     with current_app.app_context():
+#         if "user" in session:
+#             if request.method == 'POST':
+#                 user_id = session['user']['id']
+#                 description = request.form['description']
 
 
 @user_app.route('/settings/', methods=['POST', 'GET'])

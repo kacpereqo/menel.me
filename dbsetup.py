@@ -100,6 +100,8 @@ c = conn.cursor()
 # c.execute("""ALTER TABLE users ADD COLUMN description text""")
 # add location to users
 # c.execute("""ALTER TABLE users ADD COLUMN location text""")
-
-
+# set description where id = 12
+# c.execute("""UPDATE users SET description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer aliquam libero lectus, vel auctor dolor imperdiet id. Aliquam elementum cursus purus, ut convallis felis malesuada id. Integer suscipit cursus mi, vel vulputate erat vehicula varius. Mauris et iaculis est. Nam ut ligula ut nunc congue tempor ut nec quam. Morbi facilisis dui vel feugiat feugiat. Sed non nisi vitae quam tincidunt tristique eu at enim. ' WHERE id = 11""")
+c.execute("SELECT *  FROM posts where posts.user_id = ?", (11,))
+print(len(c.fetchall()))
 conn.commit()

@@ -15,8 +15,8 @@ def before_request_func():
 
     #TODO:
     # trzeba se jebnąc tutaj zeby nie robilo tych requestow za kazdym razem tylko np co 5 min 
-
     # if session.get('top_posts') is None:
+    
     c.execute("SELECT posts.id ,posts.views, posts.title FROM posts ORDER BY posts.views DESC LIMIT 10")
     top_posts = c.fetchall()
         # session['top_posts'] = top_posts

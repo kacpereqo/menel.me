@@ -5,34 +5,46 @@
 {% endblock %}
 
 {% block content %}
-<div id="profil">
-    
-    <div id="avatar">
-        <img src="{{avatar}}" class="avatar-img" />
-            
-
+<div id="content">
+    {% if banned==True %}
+    Użytkownik zbanowany: {{reason}}
+    {% else %}
+    <div id="header">
+        <div id="avatar">
+            <img src="{{avatar}}" alt="avatar" width="128" height="128">
+        </div>
+        <div id="info">
+            <ul>
+                <li>{{nick}}<span>jabole: <b style="color:#86A738;">{{points}}</b></span></li>
+                <li>{{location}}</li>
+                <li><br></li>
+                <li>{{description}}</li>
+            </ul>
+        </div>
     </div>
-    <div id="div2">
-        <div id="nick-profil">{{nick}}</div>
-            <br>
-
-            {% if banned==True %}
-            Użytkownik zbanowany: {{reason}}    
-            {% endif %}
-            
-            {% if banned==False %}
-            Ostatnio zalogowany: {{last_login}}
-            <br>
-            Na menele.me od: {{date_created}}
-            <br>
-            {{description}}
-            {% endif %}
-
-            
+    <div id="osiagniecia">
+        <h3>Osiagniecia</h3>
+        <li>
+            order usmiechu,
+            order smiechu żula
+        </li>
     </div>
-
-    
+    <div id="posts" style="width:492px;">
+        <h3>Posty</h3>
+        {% for post in posts %}
+        <div class="post" style="margin-right:18px; width:467px;">
+            <ul>
+                <li>
+                    <h3><a href="{{url_for('post_app.post_lookup', post_id = post[0])}}">{{post[3]}}</a></h3>
+                </li>
+                <li>Dodane przez: <a href="{{url_for('user_app.user', nick = nick)}}">{{nick}}</a></li>
+                <li>Dodano: {{post[1][:-7]}}</li>
+                <li id="stats">{{post[5]}}+ {{post[6]}}- {{post[4]}} wyświetleń</li>
+            </ul>
+            <a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img src="/static/img/posts/{{post[2]}}_small.webp"></a>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
-
-<center><h1> nie wiem co tu mozna wrzucic ale pusto tu jak skurwysyn </h1></center>
 {% endblock %}
