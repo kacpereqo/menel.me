@@ -34,6 +34,8 @@ def before_request_func():
 @post_app.route("/create", methods=['POST', 'GET'])
 def create():
     with current_app.app_context():
+        conn = get_conn()
+        c = conn.cursor()
         if "user" in session:
             if request.method == 'POST':
                 title = request.form['title']
@@ -57,9 +59,6 @@ def create():
                 if len(description) > 1000:
                     flash("Maksymalna ilość znaków dla opisu to 1000 znaków!")
                     return redirect(url_for('post_app.create'))
-
-                conn = get_conn()
-                c = conn.cursor()
 
                 c.execute("SELECT title FROM posts WHERE title = ?", (title,))
 
@@ -93,21 +92,13 @@ def create():
                 
                     i.save('static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=65)
 
-                    # guwniarzu po to że huj wiem co robi ale nie wiem co to jest, ale działa, ale nie wiem jak to zrobić lepiej, ~github copilot
-                    # dobra
-
-                    # how to find grilfriend
-                    # c.execute("SELECT id FROM users WHERE username = ?", (session['user'],))
-                    # user_id = c.fetchone()[0]
-                
                     user_id = session['user']['id']
                     date = datetime.now()
 
-                    conn = get_conn()
-                    c = conn.cursor()
-
-                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date)VALUES (?, ?, ?, ?, ?)",
-                              (title, description, latest_id, user_id, date))
+                    kategorie = ",".join(request.form.getlist('kategorie'))
+                    print(kategorie)
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, category)VALUES (?, ?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date, kategorie))
                     conn.commit()
 
                 if request.form["file_type"] == "film":
@@ -139,16 +130,19 @@ def create():
                     user_id = session['user']['id']
                     date = datetime.now()
 
-                    conn = get_conn()
-                    c = conn.cursor()
-
-                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video)VALUES (?, ?, ?, ?, ?, ?)",
-                              (title, description, latest_id, user_id, date, is_video))
+                    kategorie = request.form.getlist('kategorie')
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video, category)VALUES (?, ?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date, is_video,kategorie))
                     conn.commit()
+
 
                 flash("Dodano post!")
                 return redirect(url_for('index'))
-            return render_template('create.html')
+
+            c.execute("SELECT name FROM categories")
+            categories = c.fetchall()
+
+            return render_template('create.html', kategorie = categories)
         else:
             return redirect(url_for('index'))
 

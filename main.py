@@ -32,7 +32,7 @@ def index(page=1):
         page = 1
     conn = get_conn()
     c = conn.cursor()
-    c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes  FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 7 OFFSET {(page-1)*7}")
+    c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 7 OFFSET {(page-1)*7}")
     posts = c.fetchall()
     c.execute("SELECT COUNT(*) FROM posts")
     posts_count = c.fetchone()[0]
