@@ -1,8 +1,9 @@
+from email.policy import default
 from flask import Flask, current_app, render_template, request
 from modules.utils import config, get_conn
+from math import ceil
 
 app = config(Flask(__name__))
-
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -25,18 +26,31 @@ def before_request_func():
     post = c.fetchone()
     current_app.jinja_env.globals.update(random=post, top_posts=top_posts)
 
-@app.route('/')    
-@app.route('/<int:page>')
-def index(page=1):
+@app.route('/', defaults={'page': 1}, methods=['GET', 'POST'])
+@app.route('/<int:page>', methods=['GET', 'POST'])
+def index(page, **kwargs):
     if page < 1:
         page = 1
+    if request.method == 'POST':
+        sort_by = request.form['sort_by']
+        time = request.form['time']
+        order = request.form['order']
+    elif request.args:
+        sort_by = request.args.get('sort_by')
+        time = request.args.get('time')
+        order = request.args.get('order')
+    else:
+        sort_by = "id"
+        time = "999"
+        order = "DESC"
     conn = get_conn()
     c = conn.cursor()
-    c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where posts.user_id = users.id ORDER BY posts.id DESC LIMIT 7 OFFSET {(page-1)*7}")
+    c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where (posts.user_id = users.id and posts.date > DATE('now', '-{time} day'))   ORDER BY posts.{sort_by} {order} LIMIT 7 OFFSET {(page-1)*7}")
     posts = c.fetchall()
-    c.execute("SELECT COUNT(*) FROM posts")
-    posts_count = c.fetchone()[0]
-    return render_template('index.html', posts=posts, page=page, posts_count=posts_count)
+    c.execute(f"SELECT COUNT(*) FROM posts  where date > DATE('now', '-{time} day')")
+    page_count = ceil(c.fetchone()[0]/7)
+    
+    return render_template('index.html', posts=posts, page=page,page_count = page_count, sort_by=sort_by, time=time, order=order)
 
 @app.route('/search', methods=['POST'])
 def search():

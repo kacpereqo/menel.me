@@ -403,3 +403,7 @@ input:invalid {
     display: inline;
 }
 
+#sort{
+    width: 498px;
+    font-size: 13px;
+}

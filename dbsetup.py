@@ -115,5 +115,8 @@ c = conn.cursor()
 # )""")
 # add category 
 
-c.execute("""INSERT INTO categories (name) VALUES ('smieszne')""")
+# add hot int to posts
+c.execute("""ALTER TABLE posts
+ADD COLUMN hot integer DEFAULT 0""")
+
 conn.commit()

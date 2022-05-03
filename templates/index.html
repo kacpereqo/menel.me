@@ -5,7 +5,38 @@
 {% endblock %}
 
 {% block content %}
+
 <div id="content">
+    <center>
+        <div id="sort">
+            <form action="{{url_for('index')}}" method="post">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Sortuj według:</td>
+                            <td><select name="sort_by" >
+                                    <option value="hot">Gorąco</option>
+                                    <option value="views">Wyświetlenia</option>
+                                    <option value="upvotes">upvoty</option>
+                                    <option value="id">Najnowsze</option>
+                                </select></td>
+                            <td><select name="time" >
+                                    <option value = "1">Dziś</option>
+                                    <option value = "7">Tydzień</option>
+                                    <option value = "30">Miesiąc</option>
+                                    <option value = "999">Wszechczas</option>
+                                </select></td>
+                            <td><select name="order" >
+                                    <option value=" ">Rosnąco</option>
+                                    <option value="DESC">Malejąco</option>
+                                </select></td>
+                            <td><input type="submit" value="Sortuj"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </center>
     {% for post in posts %}
     <div class="post">
         <ul>
@@ -17,34 +48,35 @@
             <li> kategorie: {{post[8]}} </li>
             <li id="stats">{{post[6]}}+ {{post[7]}}- {{post[5]}} wyświetleń</li>
         </ul>
-        <a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img src="static\img\posts\{{post[3]}}_small.webp"></a>
-        </div>
+        <a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img
+                src="static\img\posts\{{post[3]}}_small.webp"></a>
+    </div>
     {% endfor %}
     <div id="move-bar">
         {% if page != 1 %}
-        <a href="{{url_for('index', page = page-1)}}" > <b><</b></a>
+        <a href="{{url_for('index', page = page-1, sort_by = sort_by, time = time, order = order)}}"> <b style="font-size:24px;">
+                <</b></a>
         {% endif %}
         {% for i in range(page-2,page+2) %}
         {% if i==page %}
         <b>{{i}}</b>
 
-        {% elif i>0 and i<posts_count//7+1%}
-        <a href="{{url_for('index', page = i)}}">{{i}}</a>
-        {% endif %}
-        
-        {% endfor %}
-        {% if page<posts_count//7+1 %}
-        ...<a href="{{url_for('index', page = posts_count//7+1)}}">{{posts_count//7+1}}</a>
-        {% endif %}
-        {% if page != posts_count//7+1%}
-        <a href="{{url_for('index', page = page+1)}}" > <b>></b></a>
-        {% endif %}
-    </div>  
+        {% elif i>0 and i<page_count %} <a href="{{url_for('index', page = i)}}">{{i}}</a>
+            {% endif %}
+
+            {% endfor %}
+            {% if page<page_count %} ...<a href="{{url_for('index', page = page_count, sort_by = sort_by, time = time, order = order)}}">
+                {{page_count}}</a>
+                {% endif %}
+                {% if page != page_count %}
+                <a href="{{url_for('index', page = page+1, sort_by = sort_by, time = time, order = order)}}"> <b style="font-size:24px;">></b></a>
+                {% endif %}
+    </div>
 </div>
 
 <div id=" tagi">
-        sex,ad,as,da,sd,asd,<br>
-        asdasd
-    </div>
+    sex,ad,as,da,sd,asd,<br>
+    asdasd
+</div>
 
-    {% endblock %}
+{% endblock %}

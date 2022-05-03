@@ -159,7 +159,11 @@ def post_lookup(post_id):
         post = c.fetchone()
         c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()
-        
+
+        days = datetime.now() - datetime.strptime(post[1][:18],"%Y-%m-%d %H:%M:%S")
+        c.execute("UPDATE posts SET hot = ? WHERE id = ?", ( ((post[6]-post[7])*5 + post[8]*0.5)/days.days+1, post_id))
+        conn.commit()
+
         if session.get("user") is not None:
             c.execute("SELECT downvoted FROM posts_votes WHERE user_id = ? and post_id = ?", (session['user']['id'], post_id))
             voted = c.fetchone()
@@ -170,8 +174,8 @@ def post_lookup(post_id):
 
         return render_template('post_lookup.html', post=post, comments=comments, voted=voted)
 
-@post_app.route("/upvote/<post_id>", methods=['POST'])
-@post_app.route("/upvote/<post_id>/<int:vote_type>", methods=['POST'])
+@post_app.route("/upvote/<post_id>", methods=['GET'])
+@post_app.route("/upvote/<post_id>/<int:vote_type>", methods=['GET'])
 def upvote(post_id,vote_type=None):
     with current_app.app_context():
         conn = get_conn()
@@ -193,13 +197,12 @@ def upvote(post_id,vote_type=None):
         
         return redirect(url_for('post_app.post_lookup', post_id=post_id))
 
-@post_app.route("/downvote/<post_id>",  methods=['POST'])
-@post_app.route("/downvote/<post_id>/<int:vote_type>",  methods=['POST'])
+@post_app.route("/downvote/<post_id>",  methods=['get'])
+@post_app.route("/downvote/<post_id>/<int:vote_type>",  methods=['get'])
 def downvote(post_id,vote_type=None):
     with current_app.app_context():
         conn = get_conn()
         c = conn.cursor()
-
 
         print(vote_type,vote_type==False)
         if vote_type == None:
