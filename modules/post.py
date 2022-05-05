@@ -130,9 +130,9 @@ def create():
                     user_id = session['user']['id']
                     date = datetime.now()
 
-                    kategorie = request.form.getlist('kategorie')
-                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video, category)VALUES (?, ?, ?, ?, ?, ?)",
-                              (title, description, latest_id, user_id, date, is_video,kategorie))
+                    kategorie = ",".join(request.form.getlist('kategorie'))
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video, category) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date, is_video, kategorie))
                     conn.commit()
 
 

@@ -1,3 +1,4 @@
+from operator import le
 from turtle import st
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
@@ -90,13 +91,34 @@ def change_avatar():
             flash("Musisz być zalogowany!")
             return redirect(url_for('index'))
 
-# @user_app.route('/change_description/', methods=['POST', 'GET'])
-# def change_description():
-#     with current_app.app_context():
-#         if "user" in session:
-#             if request.method == 'POST':
-#                 user_id = session['user']['id']
-#                 description = request.form['description']
+@user_app.route('/change_description/', methods=['POST', 'GET'])
+def change_description():
+    with current_app.app_context():
+        if "user" in session:
+            if request.method == 'POST':
+                user_id = session['user']['id']
+                description = request.form['description']
+
+                if len(description) == 0:
+                    flash("Pole opisu nie może być puste!")
+                    return redirect(url_for('user_app.change_description'))
+
+                if len(description) > 500:
+                    flash("Opis jest za długi!")
+                    return redirect(url_for('user_app.change_description'))
+            
+                conn = get_conn()
+                c = conn.cursor()
+                c.execute("UPDATE users SET description = ? WHERE id = ?", (description, user_id))
+                conn.commit()
+
+                flash("Opis został zmieniony!")
+                return redirect(url_for('user_app.user', nick=session['user']['nick']))
+
+            return render_template('change_description.html')
+        else:
+            flash("Musisz być zalogowany!")
+            return redirect(url_for('index'))
 
 
 @user_app.route('/settings/', methods=['POST', 'GET'])
