@@ -115,8 +115,10 @@ c = conn.cursor()
 # )""")
 # add category 
 
-# add hot int to posts
-c.execute("""ALTER TABLE posts
-ADD COLUMN hot integer DEFAULT 0""")
+# add table post_categories id unique post_id integer category_id integer
+c.execute("""CREATE TABLE post_categories (
+        post_id integer NOT NULL,
+    category_id integer NOT NULL
+)""")
 
 conn.commit()

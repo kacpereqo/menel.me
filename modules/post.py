@@ -161,7 +161,7 @@ def post_lookup(post_id):
         comments = c.fetchall()
 
         days = datetime.now() - datetime.strptime(post[1][:18],"%Y-%m-%d %H:%M:%S")
-        c.execute("UPDATE posts SET hot = ? WHERE id = ?", ( ((post[6]-post[7])*5 + post[8]*0.5)/days.days+1, post_id))
+        c.execute("UPDATE posts SET hot = ? WHERE id = ?", ( ((post[6]-post[7])*5 + post[8]*0.5)/(days.days+1), post_id))
         conn.commit()
 
         if session.get("user") is not None:
