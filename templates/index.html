@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+{% endblock %}
+
 {% block title %}
 {{request.url_rule}}
 {% endblock %}
 
 {% block content %}
+
+<script>
+        $( document ).ready(function() {
+            $("#sort_by").val("{{sort_by}}").change();
+            $("#time").val("{{time}}").change();
+            $("#order").val("{{order}}").change();
+        });
+</script>
 
 <div id="content">
     <center>
@@ -14,19 +26,19 @@
                     <tbody>
                         <tr>
                             <td>Sortuj według:</td>
-                            <td><select name="sort_by" >
+                            <td><select name="sort_by" id="sort_by">
                                     <option value="hot">Gorąco</option>
                                     <option value="views">Wyświetlenia</option>
                                     <option value="upvotes">upvoty</option>
                                     <option value="id">Najnowsze</option>
                                 </select></td>
-                            <td><select name="time" >
-                                    <option value = "1">Dziś</option>
-                                    <option value = "7">Tydzień</option>
-                                    <option value = "30">Miesiąc</option>
-                                    <option value = "999">Wszechczas</option>
+                            <td><select name="time" id="time">
+                                    <option value="1">Dziś</option>
+                                    <option value="7">Tydzień</option>
+                                    <option value="30">Miesiąc</option>
+                                    <option value="999">Wszechczas</option>
                                 </select></td>
-                            <td><select name="order" >
+                            <td><select name="order" id="order">
                                     <option value=" ">Rosnąco</option>
                                     <option value="DESC">Malejąco</option>
                                 </select></td>
@@ -54,8 +66,9 @@
     {% endfor %}
     <div id="move-bar">
         {% if page != 1 %}
-        <a href="{{url_for('index', page = page-1, sort_by = sort_by, time = time, order = order)}}"> <b style="font-size:24px;">
-                <</b></a>
+        <a href="{{url_for('index', page = page-1, sort_by = sort_by, time = time, order = order)}}"> <b
+                style="font-size:24px;">
+                << /b></a>
         {% endif %}
         {% for i in range(page-2,page+2) %}
         {% if i==page %}
@@ -65,11 +78,13 @@
             {% endif %}
 
             {% endfor %}
-            {% if page<page_count %} ...<a href="{{url_for('index', page = page_count, sort_by = sort_by, time = time, order = order)}}">
+            {% if page<page_count %} ...<a
+                href="{{url_for('index', page = page_count, sort_by = sort_by, time = time, order = order)}}">
                 {{page_count}}</a>
                 {% endif %}
                 {% if page != page_count %}
-                <a href="{{url_for('index', page = page+1, sort_by = sort_by, time = time, order = order)}}"> <b style="font-size:24px;">></b></a>
+                <a href="{{url_for('index', page = page+1, sort_by = sort_by, time = time, order = order)}}"> <b
+                        style="font-size:24px;">></b></a>
                 {% endif %}
     </div>
 </div>

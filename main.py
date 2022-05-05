@@ -57,12 +57,12 @@ def search():
     conn = get_conn()
     c = conn.cursor()
     q = request.form['query']
-    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
+    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
     posts = c.fetchall()
     
     c.execute("SELECT COUNT(*) FROM posts WHERE title like ?", ('%' + q + '%',))
-    posts_count = c.fetchone()[0] 
-    return render_template('index.html', posts=posts, page=1, posts_count=posts_count)
+    page_count = ceil(c.fetchone()[0]/7)
+    return render_template('index.html', posts=posts, page=1, page_count=page_count)
 
 @app.route('/kontakt')
 def kontakt():
