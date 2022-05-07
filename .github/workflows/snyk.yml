@@ -1,4 +1,4 @@
-name: Snyk example kurwa jak sie z tego korzysta xddddddddon
+name: Snyk
 on: push
 jobs:
   security:
@@ -6,9 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: snyk/actions/setup@master
-    - uses: actions/setup-go@v1
-      with:
-        go-version: "1.13"
+    - uses: actions/python-3.8@master
     - name: Snyk monitor 
       run: snyk test
       env:
