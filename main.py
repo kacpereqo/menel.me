@@ -1,5 +1,5 @@
 from email.policy import default
-from flask import Flask, current_app, render_template, request, session
+from flask import Flask, current_app, flash, redirect, render_template, request, session
 from modules.utils import config, get_conn
 from math import ceil
 
@@ -29,6 +29,9 @@ def before_request_func():
 @app.route('/', defaults={'page': 1}, methods=['GET', 'POST'])
 @app.route('/<int:page>', methods=['GET', 'POST'])
 def index(page, **kwargs):
+
+    valid_requests = ("hot", "views","upvotes","id","1","7","30","999"," ","DESC") 
+
     if page < 1:
         page = 1
     if request.method == 'POST':
@@ -43,6 +46,11 @@ def index(page, **kwargs):
         sort_by = "id"
         time = "999"
         order = "DESC"
+
+    if sort_by not in valid_requests or time not in valid_requests or order not in valid_requests:
+        flash("sex")
+        return render_template('kontakt.html')
+
     conn = get_conn()
     c = conn.cursor()
     c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where (posts.user_id = users.id and posts.date > DATE('now', '-{time} day'))   ORDER BY posts.{sort_by} {order} LIMIT 7 OFFSET {(page-1)*7}")
