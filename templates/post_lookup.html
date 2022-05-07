@@ -28,32 +28,84 @@
             <p style="font-size:11px;">Zaloguj się aby zjabolować</p>
             <p>{{post[8]}} wyswietleń</p>
             {% else %}
-                {{post[6]}}
-                <a class="vote" href="{{url_for('post_app.upvote', post_id=post[5],vote_type=voted)}}">
-                    {% if voted == false %}
-                    <b>+</b>
-                    {% else %}
-                    +
-                    {% endif %}
-                </a>
-                {{post[7]}}
-                <a class="vote" href="{{url_for('post_app.downvote', post_id=post[5],vote_type=voted)}}">
-                    {% if voted == true %}
-                    <b>-</b>
-                    {% else %}
-                    -
-                    {% endif %}
-                </a>
-            <p>{{post[8]}} wyswietleń</p>
+            {{post[6]}}
+            <a class="vote" id="upvote" href="{{url_for('post_app.upvote', post_id=post[5],vote_type=voted)}}">
+                {% if voted == false %}
+                <b>+</b>
+                {% else %}
+                +
+                {% endif %}
+            </a>
+            {{post[7]}}
+            <a class="vote" id="downvote" href="{{url_for('post_app.downvote', post_id=post[5],vote_type=voted)}}">
+                {% if voted == true %}
+                <b>-</b>
+                {% else %}
+                -
+                {% endif %}
+            </a>
+
             {% endif %}
+            <p>{{post[8]}} wyswietleń</p>
+            <script>
+                $(document).on("click", '.vote', function (e) {
+                    e.preventDefault();
+                    var vote_type = $(this).attr("href");
+                    var post_id = $(this).attr("post_id");
+                    var post_url = "/post/" + post_id;
+                    $.ajax({
+                        url: vote_type,
+                        type: "POST",
+                        data: { post_id: post_id, },
+                        success: function (data) {
+                            $("#rates").html(data);
+                        }
+                    });
+                });
+            </script>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        const textarea = document.querySelector('textarea')
+
+        textarea.onkeyup = (e) => {
+            console.log(e.target.value.length);
+            if (e.target.value.length == 0) {
+                $("#post_button").attr("disabled", true);
+            }
+            else {
+                $("#post_button").attr("disabled", false);
+            }
+        }
+    });
+</script>
+
+<script>
+    $(document).on("click", '#post_button', function (e) {
+        e.preventDefault();
+        var comment = $("#comment_area").val();
+        var post_id = $('#id').attr("value");
+        var post_url = "/comment/" + post_id;
+        $.ajax({
+            url: post_url,
+            type: "POST",
+            data: { comment: comment, },
+            success: function (data) {
+                $("#comments").html(data);
+            }
+        });
+    });
+</script>
+
 {% if session|length < 1 %} <textarea disabled rows="2" cols="55">Zalguj się aby zkomentować</textarea>
     <input type="submit" disabled value="Skomentuj">
     {% else %}
-    <form action="{{url_for('post_app.comment', post_id = post[5])}}" method="post">
-        <textarea name="comment" rows="2" cols="55"></textarea>
-        <input type="submit" value="Skomentuj">
+    <form action="{{url_for('post_app.comment', post_id = post[5])}}" method="post" id="comment_form">
+        <textarea name="comment" rows="2" cols="55" id="comment_area"></textarea>
+        <input type="hidden" id="id" value={{post[5]}} />
+        <input type="submit" id="post_button" value="Skomentuj"  disabled="true" title="Napisz cokolwiek gamoniu">
     </form>
     {% endif %}
     <div id="comments">
@@ -65,4 +117,9 @@
         </div>
         {% endfor %}
     </div>
+    <script>
+        function disable() {
+            console.log("disabled");
+        }
+    </script>
     {% endblock %}

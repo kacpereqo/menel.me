@@ -280,9 +280,6 @@ def forgotten_password():
 @login_app.route('/logout', methods=['POST', 'GET'])
 def logout():
     with current_app.app_context():
-
-        conn = get_conn()
-        c = conn.cursor()
         session.pop('user', None)
         flash('Wylogowano pomyślnie!')
         return redirect(url_for('index'))

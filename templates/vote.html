@@ -1,0 +1,18 @@
+{{upvotes}}
+
+<a class="vote" id="upvote" href="{{url_for('post_app.upvote', post_id=post_id)}}">
+    {% if voted == 0 %}
+    <b>+</b>
+    {% else %}
+    +
+    {% endif %}
+</a>
+{{downvotes}}
+<a class="vote" id="downvote" href="{{url_for('post_app.downvote', post_id=post_id)}}">
+    {% if voted == 1 %}
+    <b>-</b>
+    {% else %}
+    -
+    {% endif %}
+</a>
+<p>{{views}} wyswietleń</p>
