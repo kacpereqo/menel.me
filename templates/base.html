@@ -21,14 +21,16 @@
     <div id="container">
 
         {% with messages = get_flashed_messages() %}
+        {% if messages %}
         <div id="error">
-            <ul id="error-list">
+            <ul>
                 <li> <input type="button" value="x" onclick="usunkurwe()"> </li>
                 {% for message in messages %}
                 <li>{{ message }}</li>
                 {% endfor %}
             </ul>
         </div>
+        {% endif %}
         {% endwith %}
         <div id="logo"><img src="/static/img/ui/logo.webp"></div>
         <div id="left-bar">

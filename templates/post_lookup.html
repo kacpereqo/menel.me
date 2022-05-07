@@ -59,7 +59,6 @@
                         data: { post_id: post_id, },
                         success: function (data) {
                             $("#rates").html(data);
-                            flash("Głos został Oddany");
                         }
                     });
                 });
@@ -72,6 +71,7 @@
         const textarea = document.querySelector('textarea')
 
         textarea.onkeyup = (e) => {
+            console.log(e.target.value.length);
             if (e.target.value.length == 0) {
                 $("#post_button").attr("disabled", true);
             }
@@ -93,10 +93,7 @@
             type: "POST",
             data: { comment: comment, },
             success: function (data) {
-                console.log(data)
                 $("#comments").html(data);
-                flash("Koment został dodany");
-                $("#comment_area").val("");
             }
         });
     });
@@ -108,7 +105,7 @@
     <form action="{{url_for('post_app.comment', post_id = post[5])}}" method="post" id="comment_form">
         <textarea name="comment" rows="2" cols="55" id="comment_area"></textarea>
         <input type="hidden" id="id" value={{post[5]}} />
-        <input type="submit" id="post_button" value="Skomentuj" disabled="true" title="Napisz cokolwiek gamoniu">
+        <input type="submit" id="post_button" value="Skomentuj"  disabled="true" title="Napisz cokolwiek gamoniu">
     </form>
     {% endif %}
     <div id="comments">

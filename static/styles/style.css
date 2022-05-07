@@ -297,7 +297,6 @@ ul span {
 }
 
 #error {
-    display: none;
     font-weight: bold;
     height: fit-content;
     width: 842px;

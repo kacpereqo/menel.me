@@ -266,6 +266,8 @@ def comment(post_id):
                     with conn:
                         c.execute("INSERT INTO comments (content, user_id, post_id, date)VALUES (?, ?, ?, ?)",(comment, user_id, post_id, date))
                         conn.commit()
+                    flash("Dodano komentarz!")
+
                 with conn:
                     c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
                     comments = c.fetchall()
