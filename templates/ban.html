@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+<br>
+<div id="ban">
+    <form action="#" method="post">
+        Banowanie gagatsona
+        <br>
+        <div class="ban-field">
+            <input type="text" id="ban" name="nick" maxlength="32">nick lub</input>
+            <br>
+            <input type="text" id="ban" name="email" maxlength="32">email</input>
+            <br>
+            <textarea id="ban" name="reason" rows="4" cols="10" maxlength="500">TUTAJ SIE WPISUJE POWOD ZA POMOCA KLAWIATURY!</textarea>
+            <input type="submit" id="opis-button" value="BAN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!">
+        </div>
+    </form>
+</div>
+{% endblock %}
