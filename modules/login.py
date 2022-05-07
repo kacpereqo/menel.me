@@ -81,9 +81,8 @@ def login():
                     session['user']['id'] = data[0]
                     session.permanent = True
                     flash(f'Zalogowano pomyślnie jako {data[1]}')
-                    return redirect(url_for('index'))
-                
-        return redirect(url_for('index'))
+                    return redirect(request.referrer)
+        return redirect(request.referrer)
 
 
 @login_app.route('/register', methods=['POST', 'GET'])
