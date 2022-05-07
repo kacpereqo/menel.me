@@ -12,4 +12,4 @@ jobs:
     - name: Snyk monitor 
       run: snyk test
       env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        SNYK_TOKEN: 4f0148fa-1202-4dcc-bebd-2ea92d048160
