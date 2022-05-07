@@ -1,4 +1,5 @@
-name: Snyk example kurwa jak sie z tego korzysta xddddddddon: push
+name: Snyk example kurwa jak sie z tego korzysta xddddddddon
+on: push
 jobs:
   security:
     runs-on: ubuntu-latest
