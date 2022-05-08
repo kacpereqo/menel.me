@@ -5,15 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: snyk/actions/setup@master
     - name: Run Snyk to check for vulnerabilities
       uses: snyk/actions/python@master
-      continue-on-error: false
       env:
         SNYK_TOKEN: 4f0148fa-1202-4dcc-bebd-2ea92d048160
-      with:
-        args: --sarif-file-output=snyk.sarif
-    - name: Upload result to GitHub Code Scanning
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: snyk.sarif
