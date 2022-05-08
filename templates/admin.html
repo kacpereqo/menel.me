@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{request.url_rule}}
+{% endblock %}
+
+{% block content %}
+<br>
+<div id ="kontakt">
+    <li><a href="/admin/ban">Banning</a></li>
+    <li><a href="/admin/unban">Unbanning</a></li>
+</div>
+
+{% endblock %}

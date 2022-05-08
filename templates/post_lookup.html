@@ -94,6 +94,9 @@
             data: { comment: comment, },
             success: function (data) {
                 $("#comments").html(data);
+            },
+            error: function (data) {
+                alert("Taki komentarz już istnieje"); //boooomersko jak chuj ale co tam xd to menele.me
             }
         });
     });

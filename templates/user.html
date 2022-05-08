@@ -7,7 +7,19 @@
 {% block content %}
 <div id="content">
     {% if banned==True %}
-    Użytkownik zbanowany: {{reason}}
+    <div id="header">
+        <div id="avatar">
+            <img src="/static/img/ui/logo.webp" alt="avatar" width="128" height="128">
+        </div>
+        <div id="info">
+            <ul>
+                <li>{{nick}}</li>
+                <li>{{location}}</li>
+                <li><br></li>
+                <li><p style="white-space: pre-line">Użytkownik zbanowany: {{reason}}</p></li>
+            </ul>
+        </div>
+    </div>
     {% else %}
     <div id="header">
         <div id="avatar">

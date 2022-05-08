@@ -263,10 +263,17 @@ def comment(post_id):
 
                     conn = get_conn()
                     c = conn.cursor()
+
+                    c.execute("SELECT content,user_id,post_id FROM comments WHERE post_id = ?", (post_id,))
+                    data = c.fetchall()
+                    for i in data:
+                        if comment in i[0]:
+                            return render_template('comments.html'), 410
+                    
                     with conn:
                         c.execute("INSERT INTO comments (content, user_id, post_id, date)VALUES (?, ?, ?, ?)",(comment, user_id, post_id, date))
                         conn.commit()
-                    flash("Dodano komentarz!")
+                    # tutaj tez idk
 
                 with conn:
                     c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
