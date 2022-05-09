@@ -15,6 +15,7 @@
             $("#sort_by").val("{{sort_by}}").change();
             $("#time").val("{{time}}").change();
             $("#order").val("{{order}}").change();
+            $("#category").val("{{_category}}").change();
         });
 </script>
 
@@ -43,6 +44,19 @@
                                     <option value="DESC">Malejąco</option>
                                 </select></td>
                             <td><input type="submit" value="Sortuj"></td>
+                        </tr>
+                        <tr>
+                            <td>kategorie:</td>
+                            <td>
+
+                                <select name="category" id="category">
+                                    <option value=''>Wszystkie</option>
+                                    {% for category in categories %}
+                                    <option value='{{category[0]}}'>{{category[0]}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,4 +1,5 @@
 from email.policy import default
+from unicodedata import category
 from flask import Flask, current_app, flash, redirect, render_template, request, session
 from modules.utils import config, get_conn
 from math import ceil
@@ -28,37 +29,44 @@ def before_request_func():
 
 @app.route('/', defaults={'page': 1}, methods=['GET', 'POST'])
 @app.route('/<int:page>', methods=['GET', 'POST'])
-def index(page, **kwargs):
+def index(page):
 
     valid_requests = ("hot", "views","upvotes","id","1","7","30","999"," ","DESC") 
 
     if page < 1:
         page = 1
     if request.method == 'POST':
+        category = request.form['category']
         sort_by = request.form['sort_by']
         time = request.form['time']
         order = request.form['order']
     elif request.args:
+        category = request.args.get('category')
         sort_by = request.args.get('sort_by')
         time = request.args.get('time')
         order = request.args.get('order')
     else:
+        category = ''
         sort_by = "id"
         time = "999"
         order = "DESC"
 
-    if sort_by not in valid_requests or time not in valid_requests or order not in valid_requests:
+    conn = get_conn()
+    c = conn.cursor()
+
+    c.execute("SELECT name FROM categories")
+    categories = c.fetchall()
+
+    if sort_by not in valid_requests or time not in valid_requests or order not in valid_requests or category not in list(map(lambda x: x[0], categories))+['']:
         flash("sex")
         return render_template('kontakt.html')
 
-    conn = get_conn()
-    c = conn.cursor()
-    c.execute(f"SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where (posts.user_id = users.id and posts.date > DATE('now', '-{time} day'))   ORDER BY posts.{sort_by} {order} LIMIT 7 OFFSET {(page-1)*7}")
+    c.execute(f"""SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where (posts.user_id = users.id and posts.date > DATE('now', '-{time} day')) and posts.category LIKE "%{category}%" ORDER BY posts.{sort_by} {order} LIMIT 7 OFFSET {(page-1)*7}""")
     posts = c.fetchall()
-    c.execute(f"SELECT COUNT(*) FROM posts  where date > DATE('now', '-{time} day')")
+    c.execute(f"""SELECT COUNT(*) FROM posts  where date > DATE('now', '-{time} day') and category LIKE "%{category}%" """)
     page_count = ceil(c.fetchone()[0]/7)
     
-    return render_template('index.html', posts=posts, page=page,page_count = page_count, sort_by=sort_by, time=time, order=order)
+    return render_template('index.html', posts=posts, page=page,page_count = page_count, sort_by=sort_by, time=time, order=order, categories=categories, _category=category)
 
 @app.route('/search', methods=['POST'])
 def search():

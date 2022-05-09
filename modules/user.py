@@ -1,5 +1,3 @@
-from operator import le
-from turtle import st
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
 from sqlalchemy import true

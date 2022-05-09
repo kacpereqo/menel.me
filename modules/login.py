@@ -1,6 +1,5 @@
 import re
 import secrets
-from h11 import Data
 import yagmail
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app

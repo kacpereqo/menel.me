@@ -95,8 +95,8 @@ def create():
                     user_id = session['user']['id']
                     date = datetime.now()
 
-                    kategorie = ",".join(request.form.getlist('kategorie'))
-                    print(kategorie)
+                    # for category in request.form.getlist('kategorie'):
+                        
                     c.execute("INSERT INTO posts (title, description, img_id, user_id, date, category)VALUES (?, ?, ?, ?, ?, ?)",
                               (title, description, latest_id, user_id, date, kategorie))
                     conn.commit()
@@ -266,10 +266,12 @@ def comment(post_id):
 
                     c.execute("SELECT content,user_id,post_id FROM comments WHERE post_id = ?", (post_id,))
                     data = c.fetchall()
-                    for i in data:
-                        if comment in i[0]:
-                            return render_template('comments.html'), 410
-                    
+
+                    # for i in data:
+                    #     if comment in i[0]:
+                    #         return render_template('comments.html'), 410
+                    # to nie ma sensu tego sprawdzac :/ 
+                    # poco to i wogule
                     with conn:
                         c.execute("INSERT INTO comments (content, user_id, post_id, date)VALUES (?, ?, ?, ?)",(comment, user_id, post_id, date))
                         conn.commit()
