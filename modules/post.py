@@ -33,6 +33,8 @@ def before_request_func():
 
 @post_app.route("/create", methods=['POST', 'GET'])
 def create():
+    safe_categories = ("jabol","spanie","taniec","seks","harnaś","smieszne")
+
     with current_app.app_context():
         conn = get_conn()
         c = conn.cursor()
@@ -65,6 +67,12 @@ def create():
                 if c.fetchone() is not None:
                     flash("Post z taką nazwą już istnieje!")
                     return redirect(url_for('post_app.create'))
+
+                kategorie = ""
+
+                for i in request.form.getlist('kategorie'): # kolejna dziura do sprawdzzania xdxdxdddDDXDDDd
+                    if i in safe_categories:
+                        kategorie += i + " "
 
                 if request.form['file_type'] == "zdjecie":
                     try:
@@ -130,7 +138,6 @@ def create():
                     user_id = session['user']['id']
                     date = datetime.now()
 
-                    kategorie = ",".join(request.form.getlist('kategorie'))
                     c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video, category) VALUES (?, ?, ?, ?, ?, ?, ?)",
                               (title, description, latest_id, user_id, date, is_video, kategorie))
                     conn.commit()
