@@ -128,4 +128,7 @@ c = conn.cursor()
 # c.execute("""ALTER TABLE posts
 # ADD COLUMN file_name text""")
 
+# add column f to posts
+c.execute("""ALTER TABLE posts
+ADD COLUMN file_name text""")
 conn.commit()
