@@ -27,3 +27,6 @@ def config(app):
         app.config['USE_SESSION_FOR_NEXT'] = False
         app.config['SESSION_PROTECTION'] = 'strong'
     return app
+
+def cleanFilename(s,  r =" %:/,.\\[]<>*?"):
+    return ''.join([c for c in s if c not in r])

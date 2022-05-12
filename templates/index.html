@@ -11,58 +11,70 @@
 {% block content %}
 
 <script>
-        $( document ).ready(function() {
-            $("#sort_by").val("{{sort_by}}").change();
-            $("#time").val("{{time}}").change();
-            $("#order").val("{{order}}").change();
-            $("#category").val("{{_category}}").change();
-        });
+    $(document).ready(function () {
+        $("#sort_by").val("{{sort_by}}").change();
+        $("#time").val("{{time}}").change();
+        $("#order").val("{{order}}").change();
+        $("#category").val("{{_category}}").change();
+    });
 </script>
 
 <div id="content">
-    <center>
-        <div id="sort">
-            <form action="{{url_for('index')}}" method="post">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Sortuj według:</td>
-                            <td><select name="sort_by" id="sort_by">
-                                    <option value="hot">Gorąco</option>
-                                    <option value="views">Wyświetlenia</option>
-                                    <option value="upvotes">upvoty</option>
-                                    <option value="id">Najnowsze</option>
-                                </select></td>
-                            <td><select name="time" id="time">
-                                    <option value="1">Dziś</option>
-                                    <option value="7">Tydzień</option>
-                                    <option value="30">Miesiąc</option>
-                                    <option value="999">Wszechczas</option>
-                                </select></td>
-                            <td><select name="order" id="order">
-                                    <option value=" ">Rosnąco</option>
-                                    <option value="DESC">Malejąco</option>
-                                </select></td>
-                            <td><input type="submit" value="Sortuj"></td>
-                        </tr>
-                        <tr>
-                            <td>kategorie:</td>
-                            <td>
+    <button onclick="chowajfiltrygnoju()">Filtruj flirtuj eheheheh</button>
 
-                                <select name="category" id="category">
-                                    <option value=''>Wszystkie</option>
-                                    {% for category in categories %}
-                                    <option value='{{category[0]}}'>{{category[0]}}</option>
-                                    {% endfor %}
-                                </select>
-                            </td>
-                            <td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
-        </div>
-    </center>
+    <script>
+        window.onload = chowajfiltrygnoju;
+        function chowajfiltrygnoju() {
+            var x = document.getElementById("sort");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        } 
+    </script>
+
+    <div id="sort">
+        <form action="{{url_for('index')}}" method="post">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Sortuj według:</td>
+                        <td><select name="sort_by" id="sort_by">
+                                <option value="hot">Gorąco</option>
+                                <option value="views">Wyświetlenia</option>
+                                <option value="upvotes">upvoty</option>
+                                <option value="id">Najnowsze</option>
+                            </select></td>
+                        <td><select name="time" id="time">
+                                <option value="1">Dziś</option>
+                                <option value="7">Tydzień</option>
+                                <option value="30">Miesiąc</option>
+                                <option value="999">Wszechczas</option>
+                            </select></td>
+                        <td><select name="order" id="order">
+                                <option value=" ">Rosnąco</option>
+                                <option value="DESC">Malejąco</option>
+                            </select></td>
+                        <td><input type="submit" value="Sortuj"></td>
+                    </tr>
+                    <tr>
+                        <td>Kategorie:</td>
+                        <td>
+
+                            <select name="category" id="category">
+                                <option value=''>Wszystkie</option>
+                                {% for category in categories %}
+                                <option value='{{category[0]}}'>{{category[0]}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
     {% for post in posts %}
     <div class="post">
         <a href="{{url_for('admin_app.report', nick = post[1], post_id = post[0])}}" title="Zreportuj gagatka" style="margin:10px;"> <svg xmlns="http://www.w3.org/2000/svg" width="16"  viewBox="0 0 512 512"><path d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
@@ -77,31 +89,33 @@
             <li id="stats">{{post[6]}}+ {{post[7]}}- {{post[5]}} wyświetleń</li>
         </ul>
         <a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img
-                src="static\img\posts\{{post[3]}}_small.webp"></a>
+                src="static\img\posts\{{post[9]}}_small.webp"></a>
     </div>
     {% endfor %}
     <div id="move-bar">
         {% if page != 1 %}
         <a href="{{url_for('index', page = page-1, sort_by = sort_by, time = time, order = order)}}"> <b
                 style="font-size:24px;">
-                </b><</a>
+            </b>
+            << /a>
+                {% endif %}
+                {% for i in range(page-2,page+2) %}
+                {% if i==page %}
+                <b>{{i}}</b>
+
+                {% elif i>0 and i<page_count %} <a href="{{url_for('index', page = i)}}">{{i}}
+        </a>
         {% endif %}
-        {% for i in range(page-2,page+2) %}
-        {% if i==page %}
-        <b>{{i}}</b>
 
-        {% elif i>0 and i<page_count %} <a href="{{url_for('index', page = i)}}">{{i}}</a>
+        {% endfor %}
+        {% if page<page_count %} ...<a
+            href="{{url_for('index', page = page_count, sort_by = sort_by, time = time, order = order)}}">
+            {{page_count}}</a>
             {% endif %}
-
-            {% endfor %}
-            {% if page<page_count %} ...<a
-                href="{{url_for('index', page = page_count, sort_by = sort_by, time = time, order = order)}}">
-                {{page_count}}</a>
-                {% endif %}
-                {% if page != page_count %}
-                <a href="{{url_for('index', page = page+1, sort_by = sort_by, time = time, order = order)}}"> <b
-                        style="font-size:24px;"></b>></a>
-                {% endif %}
+            {% if page != page_count %}
+            <a href="{{url_for('index', page = page+1, sort_by = sort_by, time = time, order = order)}}"> <b
+                    style="font-size:24px;"></b>></a>
+            {% endif %}
     </div>
 </div>
 

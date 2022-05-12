@@ -116,22 +116,16 @@ c = conn.cursor()
 # add category 
 
 # add table post_categories id unique post_id integer category_id integer
-# add permission to users int default 0
+# c.execute("""CREATE TABLE post_categories (
+#         post_id integer NOT NULL,
+#     category_id integer NOT NULL
+# )""")
 
-# permision 
-# 0 = user
-# 1 = moderator
-# 2 = admin
+# clear table posts
+# c.execute("DELETE FROM posts")
 
-# set permmission to 1 where email = 'remzak.k@gmail.com'
-# c.execute("""UPDATE users SET permission = 2 WHERE email = 'remzak.k@gmail.com' """)
+# add column f to posts
+# c.execute("""ALTER TABLE posts
+# ADD COLUMN file_name text""")
 
-# create report table 
-c.execute("""CREATE TABLE reports (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id integer NOT NULL,
-    post_id integer NOT NULL,
-    reason text NOT NULL
- )""")
-# 
 conn.commit()

@@ -1,6 +1,6 @@
 from email.policy import default
 from unicodedata import category
-from flask import Flask, current_app, flash, redirect, render_template, request, session
+from flask import Flask, current_app, flash, redirect, render_template, request, session, url_for
 from modules.utils import config, get_conn
 from math import ceil
 
@@ -61,7 +61,7 @@ def index(page):
         flash("sex")
         return render_template('kontakt.html')
 
-    c.execute(f"""SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category FROM posts,users where (posts.user_id = users.id and posts.date > DATE('now', '-{time} day')) and posts.category LIKE "%{category}%" ORDER BY posts.{sort_by} {order} LIMIT 7 OFFSET {(page-1)*7}""")
+    c.execute(f"""SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category, posts.file_name FROM posts,users where (posts.user_id = users.id and posts.date > DATE('now', '-{time} day')) and posts.category LIKE "%{category}%" ORDER BY posts.{sort_by} {order} LIMIT 7 OFFSET {(page-1)*7}""")
     posts = c.fetchall()
     c.execute(f"""SELECT COUNT(*) FROM posts  where date > DATE('now', '-{time} day') and category LIKE "%{category}%" """)
     page_count = ceil(c.fetchone()[0]/7)
@@ -73,11 +73,17 @@ def search():
     conn = get_conn()
     c = conn.cursor()
     q = request.form['query']
-    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
+    c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category, posts.file_name  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
     posts = c.fetchall()
     
     c.execute("SELECT COUNT(*) FROM posts WHERE title like ?", ('%' + q + '%',))
     page_count = ceil(c.fetchone()[0]/7)
+    print(page_count)
+
+    if page_count == 0:
+        flash("Brak wyników dla twojego zapytania")
+        return redirect(url_for('index'))
+
     return render_template('index.html', posts=posts, page=1, page_count=page_count)
 
 @app.route('/kontakt')
