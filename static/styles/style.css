@@ -407,3 +407,10 @@ input:invalid {
     width: 498px;
     font-size: 13px;
 }
+
+svg{
+    filter: invert(38%) sepia(8%) saturate(4728%) hue-rotate(37deg) brightness(96%) contrast(69%);
+}
+svg:hover{
+    filter: invert(64%) sepia(10%) saturate(2353%) hue-rotate(37deg) brightness(93%) contrast(88%);
+}

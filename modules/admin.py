@@ -25,9 +25,12 @@ def before_request_func():
     current_app.jinja_env.globals.update(random=post, top_posts=top_posts)
 
 @admin_app.route("/admin")
-def admin():
+def admin_panel():
     if "user" in session:
-        if session['user']['id'] != 1:
+        conn = get_conn()
+        c = conn.cursor()
+        c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
+        if c.fetchone()[0] != 2:
             flash("Nie masz uprawnień do tej strony!")
             return redirect(url_for('index'))
     else:
@@ -39,7 +42,10 @@ def admin():
 @admin_app.route('/admin/unban', methods=['GET', 'POST'])
 def unban():
     if "user" in session:
-        if session['user']['id'] != 1:
+        conn = get_conn()
+        c = conn.cursor()
+        c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
+        if c.fetchone()[0] != 2:
             flash("Nie masz uprawnień do tej strony!")
             return redirect(url_for('index'))
     else:
@@ -83,7 +89,10 @@ def unban():
 @admin_app.route('/admin/ban', methods=['GET', 'POST'])
 def ban():
     if "user" in session:
-        if session['user']['id'] != 1:
+        conn = get_conn()
+        c = conn.cursor()
+        c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
+        if c.fetchone()[0] != 2:
             flash("Nie masz uprawnień do tej strony!")
             return redirect(url_for('index'))
     else:
@@ -96,14 +105,11 @@ def ban():
             user_email = request.form['email']
             reason = request.form['reason']
 
-            print(user_nick, user_email, reason)
-
             conn = get_conn()
             c = conn.cursor()
             c.execute("SELECT * FROM users WHERE nick = ? OR email = ?", (user_nick, user_email))
 
             data = c.fetchone()
-            print(data)
 
             if data is None:
                 flash("Nie ma takiego użytkownika!")
@@ -124,5 +130,20 @@ def ban():
 
                 flash("Gagatek zostal zbanowany hehehehe")
                 return render_template('ban.html')
-                
+            
         return render_template('ban.html')
+
+
+@admin_app.route('/report/<nick>/<int:post_id>', methods=['GET', 'POST'])
+def report(nick, post_id):
+    # if request method post
+    if request.method == 'POST':
+        conn = get_conn()
+        c = conn.cursor()
+        flash("Zgłoszono użytkownika")
+        with conn:
+            c.execute("INSERT INTO reports (user_id, reason, post_id) VALUES (?, ?, ?)", (nick, request.form['reason'],post_id))
+        return redirect(url_for('index'))
+    # if request method get
+    else:
+        return render_template('report.html', nick=nick, post_id=post_id)        
