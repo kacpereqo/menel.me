@@ -1,7 +1,8 @@
 from asyncio import subprocess
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
-from modules.utils import get_conn
+from modules.user import user
+from modules.utils import get_conn, cleanFilename
 from datetime import datetime
 from PIL import Image
 import subprocess
@@ -26,8 +27,9 @@ def before_request_func():
     top_posts = c.fetchall()
         # session['top_posts'] = top_posts
 
-    c.execute("SELECT posts.id ,posts.img_id FROM posts ORDER BY RANDOM() LIMIT 1")
+    c.execute("SELECT posts.id ,posts.img_id, posts.file_name FROM posts ORDER BY RANDOM() LIMIT 1")
     post = c.fetchone()
+    # nie dziala :///////////// kurwa dlaczego??????
     current_app.jinja_env.globals.update(random=post, top_posts=top_posts)
     
 
@@ -48,10 +50,10 @@ def create():
                 if len(content) < 1:
                     flash("Plik nie może być pusty")
                     return redirect(url_for('post_app.create'))
-                if len(title) < 1:
+                if (len(title) - title.count(" ")) < 1:
                     flash("Tytuł nie może być pusty")
                     return redirect(url_for('post_app.create'))
-                if len(description) < 1:
+                if (len(description) - description.count(" ")) < 1:
                     flash("Opis nie może być pusty")
                     return redirect(url_for('post_app.create'))
 
@@ -61,6 +63,11 @@ def create():
                 if len(description) > 1000:
                     flash("Maksymalna ilość znaków dla opisu to 1000 znaków!")
                     return redirect(url_for('post_app.create'))
+
+                # CHODZI O TO ZE MOZNA NIE WYBRAC OBRAZU CZY WIDJA I SIE WYPIERDALA
+                # if request.form['file_type'] != "zdjecie" or request.form['file_type'] == "film":
+                #     flash("Nieprawidłowy typ pliku")
+                #     return redirect(url_for('post_app.create'))
 
                 c.execute("SELECT title FROM posts WHERE title = ?", (title,))
 
@@ -88,7 +95,14 @@ def create():
                     latest_id = get_conn().execute(
                         "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
-                    i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
+                    t = cleanFilename(title.split(" ")[0])
+                    d = cleanFilename(description.split(" ")[0])
+                    u = cleanFilename(session['user']['nick'])
+                    fname = t+"_"+d+"_"+u+"_"+str(latest_id)
+
+                    # name_for_file = 
+
+                    i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + fname + '_small.webp', optimize=True, quality=35)
 
                     image_watermark = Image.open('static/img/logo.png').convert('RGBA')
 
@@ -98,15 +112,15 @@ def create():
                     
                     i.paste(image_watermark, (i.size[0]-image_watermark.size[0]-50, i.size[1]-image_watermark.size[1]-50), image_watermark)
                 
-                    i.save('static/img/posts/' + str(latest_id) + '_large.webp', optimize=True, quality=65)
+                    i.save('static/img/posts/' + fname + '_large.webp', optimize=True, quality=65)
 
                     user_id = session['user']['id']
                     date = datetime.now()
 
                     # for category in request.form.getlist('kategorie'):
                         
-                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, category)VALUES (?, ?, ?, ?, ?, ?)",
-                              (title, description, latest_id, user_id, date, kategorie))
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, category, file_name)VALUES (?, ?, ?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date, kategorie,fname))
                     conn.commit()
 
                 if request.form["file_type"] == "film":
@@ -114,32 +128,37 @@ def create():
                     latest_id = get_conn().execute(
                         "SELECT seq FROM sqlite_sequence where name='posts'").fetchone()[0]
 
-                    f = open("static/img/posts_video/"+str(latest_id)+"i.webm", "wb")
+                    t = cleanFilename(title.split(" ")[0])
+                    d = cleanFilename(description.split(" ")[0])
+                    u = cleanFilename(session['user']['nick'])
+                    fname = t+"_"+d+"_"+u+"_"+str(latest_id)
+
+                    f = open("static/img/posts_video/"+fname+"i.webm", "wb")
                     f.write(content)
                     f.close()
 
-                    video = mpe.VideoFileClip("static/img/posts_video/"+str(latest_id)+"i.webm")
+                    video = mpe.VideoFileClip("static/img/posts_video/"+fname+"i.webm")
 
                     i = Image.fromarray(video.get_frame(1)) #
-                    i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + str(latest_id) + '_small.webp', optimize=True, quality=35)
+                    i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + fname + '_small.webp', optimize=True, quality=35)
 
                     if len(content) > 25000000: # wieksze od 25mb to kompresja wlatuje xd
                         
                         # print("Xd") # jebnie sie ffmpeg TODO
 
-                        subprocess.call('ffmpeg -i static/img/posts_video/'+str(latest_id)+'i.webm -vcodec libvpx -crf 55 -b:v 1M -acodec libvorbis static/img/posts_video/'+str(latest_id)+'.webm -y', shell=True)
-                        os.remove("static/img/posts_video/"+str(latest_id)+"i.webm")
+                        subprocess.call('ffmpeg -i static/img/posts_video/'+fname+'i.webm -vcodec libvpx -crf 55 -b:v 1M -acodec libvorbis static/img/posts_video/'+fname+'.webm -y', shell=True)
+                        os.remove("static/img/posts_video/"+fname+"i.webm")
                         # os.rename("static/img/posts_video/"+str(latest_id)+"i.webm", "static/img/posts_video/"+str(latest_id)+".webm")
                     else:
-                        os.rename("static/img/posts_video/"+str(latest_id)+"i.webm", "static/img/posts_video/"+str(latest_id)+".webm")
+                        os.rename("static/img/posts_video/"+fname+"i.webm", "static/img/posts_video/"+fname+".webm")
 
                     is_video = True
                     
                     user_id = session['user']['id']
                     date = datetime.now()
 
-                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video, category) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                              (title, description, latest_id, user_id, date, is_video, kategorie))
+                    c.execute("INSERT INTO posts (title, description, img_id, user_id, date, is_video, category, file_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                              (title, description, latest_id, user_id, date, is_video, kategorie, fname))
                     conn.commit()
 
 
@@ -162,7 +181,7 @@ def post_lookup(post_id):
         c.execute("UPDATE posts SET views = views + 1 WHERE id = ?", (post_id,))
         conn.commit()
         c.execute(
-            "SELECT users.nick, posts.date, posts.title, posts.img_id, posts.description, posts.id, posts.upvotes,posts.downvotes, posts.views, posts.is_video FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
+            "SELECT users.nick, posts.date, posts.title, posts.img_id, posts.description, posts.id, posts.upvotes,posts.downvotes, posts.views, posts.is_video, posts.file_name FROM posts,users WHERE posts.id = ? and posts.user_id = users.id", (post_id,))
         post = c.fetchone()
         c.execute("SELECT users.nick,comments.date,comments.content FROM comments,users WHERE comments.post_id = ? and comments.user_id = users.id ORDER BY comments.date", (post_id,))
         comments = c.fetchall()
@@ -274,11 +293,12 @@ def comment(post_id):
                     c.execute("SELECT content,user_id,post_id FROM comments WHERE post_id = ?", (post_id,))
                     data = c.fetchall()
 
-                    # for i in data:
-                    #     if comment in i[0]:
-                    #         return render_template('comments.html'), 410
+                    for i in data:
+                        if comment in i[0]:
+                            return render_template('comments.html'), 410
                     # to nie ma sensu tego sprawdzac :/ 
                     # poco to i wogule
+                    # kurwa to jest zeby spamu nie bylo xddd
                     with conn:
                         c.execute("INSERT INTO comments (content, user_id, post_id, date)VALUES (?, ?, ?, ?)",(comment, user_id, post_id, date))
                         conn.commit()

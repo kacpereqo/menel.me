@@ -406,4 +406,14 @@ input:invalid {
 #sort{
     width: 498px;
     font-size: 13px;
+    margin-bottom: 10px;
+    padding: 5px;
+    padding-left: 8px;
+    background-color: #f2f2f2;
+    position: relative;
+}
+
+#content button{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

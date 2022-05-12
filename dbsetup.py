@@ -116,9 +116,16 @@ c = conn.cursor()
 # add category 
 
 # add table post_categories id unique post_id integer category_id integer
-c.execute("""CREATE TABLE post_categories (
-        post_id integer NOT NULL,
-    category_id integer NOT NULL
-)""")
+# c.execute("""CREATE TABLE post_categories (
+#         post_id integer NOT NULL,
+#     category_id integer NOT NULL
+# )""")
+
+# clear table posts
+# c.execute("DELETE FROM posts")
+
+# add column f to posts
+# c.execute("""ALTER TABLE posts
+# ADD COLUMN file_name text""")
 
 conn.commit()
