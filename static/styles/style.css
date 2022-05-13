@@ -90,6 +90,16 @@ font-weight: bold;
     overflow: hidden;
 }
 
+#cookies {
+    margin-right: 322px;
+    overflow: auto;
+    font-size: 12px;
+    width: 470px;
+    block-size: fit-content;
+    text-align: justify;
+    height: 1158px;
+}
+
 #content {
     position: relative;
     float: left;

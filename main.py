@@ -87,6 +87,10 @@ def search():
 
     return render_template('index.html', posts=posts, page=1, page_count=page_count)
 
+@app.route('/ciasteczka')
+def ciasteczka():
+    return render_template('ciasteczka.html')
+
 @app.route('/kontakt')
 def kontakt():
     return render_template('kontakt.html')
