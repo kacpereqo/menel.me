@@ -137,12 +137,30 @@ def ban():
 @admin_app.route('/report/<nick>/<int:post_id>', methods=['GET', 'POST'])
 def report(nick, post_id):
     # if request method post
+    #  if "user" in session:
+    #     conn = get_conn()
+    #     c = conn.cursor()
+    #     c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
+    #     if c.fetchone()[0] != 2:
+    #         flash("Nie masz uprawnień do tej strony!")
+    #         return redirect(url_for('index'))
+    # else:
+    #     flash("Nie masz uprawnień do tej strony!")
+    #     return redirect(url_for('index'))
     if request.method == 'POST':
+        if "user" not in session:
+            flash("Najpierw musisz się zalogować!")
+            return redirect(url_for('index'))
+        
+        if (len(request.form['reason']) - request.form['reason'].count(" ")) < 1:
+            flash("Zgłosznie nie może być puste")
+            return render_template('report.html', nick=nick, post_id=post_id)       
+
         conn = get_conn()
         c = conn.cursor()
         flash("Zgłoszono użytkownika")
         with conn:
-            c.execute("INSERT INTO reports (user_id, reason, post_id) VALUES (?, ?, ?)", (nick, request.form['reason'],post_id))
+            c.execute("INSERT INTO reports (user_id, reason, post_id) VALUES (?, ?, ?)", (nick, "Zgłosznie autorstwa: "+ session["user"]["nick"] + " - " + request.form['reason'],post_id))
         return redirect(url_for('index'))
     # if request method get
     else:
