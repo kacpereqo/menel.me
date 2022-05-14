@@ -22,7 +22,7 @@ def config(app):
         app.register_blueprint(user_app)
         app.register_blueprint(admin_app)
         # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 7200
-        app.config['MAX_CONTENT_LENGTH'] = 32 * 1000 * 1000
+        app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
         app.config['SESSION_PERMANENT'] = False
         app.config['USE_SESSION_FOR_NEXT'] = False
         app.config['SESSION_PROTECTION'] = 'strong'
