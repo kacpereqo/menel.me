@@ -5,6 +5,8 @@ from modules.user import user
 from modules.utils import get_conn, cleanFilename
 from datetime import datetime
 from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw 
 import subprocess
 import io
 import os
@@ -104,15 +106,11 @@ def create():
 
                     i.resize((130, 100), Image.LANCZOS).save('static/img/posts/' + fname + '_small.webp', optimize=True, quality=35)
 
-                    image_watermark = Image.open('static/img/logo.png').convert('RGBA')
-
-                    scale = 0.3
-
-                    image_watermark = image_watermark.resize((round((i.size[0]/i.size[1])*311*scale),round((i.size[0]/i.size[1])*183*scale)), Image.LANCZOS)
-                    
-                    i.paste(image_watermark, (i.size[0]-image_watermark.size[0]-50, i.size[1]-image_watermark.size[1]-50), image_watermark)
+                    draw = ImageDraw.Draw(i)
+                    font = ImageFont.truetype("static/coolvetica_rg.otf", 20)
+                    draw.text((40, i.size[1]-40),"menele.me",(247, 235, 2,128),font=font)
                 
-                    i.save('static/img/posts/' + fname + '_large.webp', optimize=True, quality=65)
+                    i.save('static/img/posts/' + fname + '_large.webp', optimize=True, quality=70)
 
                     user_id = session['user']['id']
                     date = datetime.now()

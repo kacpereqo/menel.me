@@ -156,7 +156,7 @@ ul span {
     text-align: center;
 }
 
-#right-bar input[type=text] {
+#right-bar input[type=text], input[type=password] {
     width: 85%;
 }
 
@@ -436,3 +436,5 @@ svg:hover{
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+

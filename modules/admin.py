@@ -30,7 +30,7 @@ def admin_panel():
         conn = get_conn()
         c = conn.cursor()
         c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
-        if c.fetchone()[0] != 2:
+        if c.fetchone()[0] < 2:
             flash("Nie masz uprawnień do tej strony!")
             return redirect(url_for('index'))
     else:
@@ -45,7 +45,7 @@ def unban():
         conn = get_conn()
         c = conn.cursor()
         c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
-        if c.fetchone()[0] != 2:
+        if c.fetchone()[0] < 2:
             flash("Nie masz uprawnień do tej strony!")
             return redirect(url_for('index'))
     else:
@@ -92,7 +92,7 @@ def ban():
         conn = get_conn()
         c = conn.cursor()
         c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
-        if c.fetchone()[0] != 2:
+        if c.fetchone()[0] < 2:
             flash("Nie masz uprawnień do tej strony!")
             return redirect(url_for('index'))
     else:
@@ -132,6 +132,56 @@ def ban():
                 return render_template('ban.html')
             
         return render_template('ban.html')
+
+@admin_app.route('/admin/permissions', methods=['GET', 'POST'])
+def permissions():
+    perm = [False]
+    if "user" in session:
+        conn = get_conn()
+        c = conn.cursor()
+        c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
+        if c.fetchone()[0] < 2:
+            flash("Nie masz uprawnień do tej strony!")
+            return redirect(url_for('index'))
+    else:
+        flash("Nie masz uprawnień do tej strony!")
+        return redirect(url_for('index'))
+
+    with current_app.app_context():
+        if request.method == 'POST':
+
+            user_nick = request.form['nick']
+            user_email = request.form['email']
+
+            conn = get_conn()
+            c = conn.cursor()
+            c.execute("SELECT * FROM users WHERE nick = ? OR email = ?", (user_nick, user_email))
+
+            data = c.fetchone()
+
+            print(data)
+
+            if data is None:
+                flash("Nie ma takiego użytkownika!")
+                return render_template('permissions.html', perm=perm)
+
+            if request.form['smb'] == "Sprawdz":
+                c.execute("SELECT nick,permission FROM users WHERE id = ?", (data[0], ))
+                t = c.fetchone()
+                perm = [True,t[0],t[1]]
+                return render_template('permissions.html', perm=perm)
+
+            if request.form['smb'] == "Zmien":
+
+                c.execute("SELECT nick,permission FROM users WHERE id = ?", (data[0], ))
+                t = c.fetchone()
+                c.execute("UPDATE users SET permission = ? WHERE id = ?", (request.form['permiss'], data[0]))
+                conn.commit()
+                flash(f"Uprawnienia dla {t[0]} zostały zmienione na poziom {request.form['permiss']} z {t[1]}")
+                perm = [False]
+                return render_template('permissions.html', perm=perm)
+            
+        return render_template('permissions.html', perm=perm)
 
 
 @admin_app.route('/report/<nick>/<int:post_id>', methods=['GET', 'POST'])

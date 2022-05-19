@@ -129,6 +129,10 @@ c = conn.cursor()
 # ADD COLUMN file_name text""")
 
 # add column f to posts
-c.execute("""ALTER TABLE posts
-ADD COLUMN file_name text""")
+# c.execute("""ALTER TABLE posts
+# ADD COLUMN file_name text""")
+
+# update user permission with id 2
+# c.execute("""UPDATE users SET permission = 5 WHERE id = 1""")
+
 conn.commit()

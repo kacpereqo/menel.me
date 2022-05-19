@@ -79,6 +79,7 @@ def login():
                     session['user']['password'] = data[2]
                     session['user']['email'] = email
                     session['user']['id'] = data[0]
+                    session['user']['permission'] = data[11]
                     session.permanent = True
                     flash(f'Zalogowano pomyślnie jako {data[1]}')
                     return redirect(request.referrer)
@@ -156,7 +157,7 @@ def register():
             conn.commit()
 
             flash("Zarejestrowano pomyślnie! Zweryfikuj swoje konto")
-            return redirect(url_for('login_app.login'))
+            return redirect(url_for('index'))
         return render_template('register.html')
 
 
@@ -193,7 +194,7 @@ def verify():
         c.execute("UPDATE users SET active = 1 WHERE email = ?", (email,))
         conn.commit()
         flash("Konto zostało aktywowane!")
-    return redirect(url_for('login_app.login'))
+    return redirect(url_for('index'))
 
 @login_app.route('/reset_password', methods=['POST', 'GET'])
 def reset_password():

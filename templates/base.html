@@ -85,7 +85,7 @@
                 {% if session['user']|length < 1 %} <form action="{{url_for('login_app.login')}}" method="POST">
                     <li><img src=" /static/img/ui/logowanie.webp"></li>
                     <li> <span>E-mail</span> <input type="text" name="eml"></li>
-                    <li> <span>Hasło</span> <input type="text" name="pswrd"></li>
+                    <li> <span>Hasło</span> <input type="password" name="pswrd"></li>
                     <li><input type="checkbox"> <span>Zapamiętaj mnie</span></li>
                     <li><input type="submit" value="Zaloguj"></li>
                     <li><a href="{{url_for('login_app.register')}}">Nowe konto</a></li>
@@ -96,7 +96,11 @@
                     <li><a href="{{url_for('user_app.user',nick = session['user']['nick'])}}">Profil</a></li>
                     <li><a href="{{url_for('user_app.settings',nick = session['user']['nick'])}}">Ustawienia</a></li>
                     <li><a href="{{url_for('post_app.create')}}">Stwórz post</a></li>
+
+                    {% if session['user']['permission'] > 2 %}
                     <li><a href="{{url_for('admin_app.admin_panel')}}">Admin Panel</a></li>
+                    {% endif %}
+
                     <li>
                         <form action="{{url_for('login_app.logout')}}" method="POST">
                             <input type="submit" value="wyloguj">

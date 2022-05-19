@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{request.url_rule}}
+menele.me - profil {{nick}}
 {% endblock %}
 
 {% block content %}
@@ -28,6 +28,7 @@
         <div id="info">
             <ul>
                 <li>{{nick}}<span>jabole: <b style="color:#86A738;">{{points}}</b></span></li>
+                <li>Ostatino online: {{last_login}}</li>
                 <li>{{location}}</li>
                 <li><br></li>
                 <li><p style="white-space: pre-line">{{description}}</p></li>

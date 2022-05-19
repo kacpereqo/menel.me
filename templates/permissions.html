@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+menele.me - unban
+{% endblock %}
+
+{% block content %}
+<br>
+<div id="ban">
+    <form action="#" method="post">
+        Zmiana permisji dla gagatka
+        <br>
+        Sprawdzanie permisji uzytkownika
+        <div class="ban-field">
+            <input type="text" id="ban" name="nick" maxlength="32">nick lub</input>
+            <br>
+            <input type="text" id="ban" name="email" maxlength="32">email</input>
+            <br>
+            <input type="submit" id="opis-button" name="smb" value="Sprawdz">
+        </div>
+        <br>
+        {% if perm[0] == True %}
+
+        Permisje dla: <b>{{perm[1]}}</b> to: <b>{{perm[2]}}</b> poziom
+        <br>
+        {% endif %}
+        <br>
+        Zmiana permisji
+        <div class="ban-field">
+            <input type="number" id="ban" name="permiss" maxlength="2">poziom permisji</input>
+            <br>
+            <input type="submit" id="opis-button" name="smb" value="Zmien">
+        </div>
+    </form>
+</div>
+{% endblock %}
