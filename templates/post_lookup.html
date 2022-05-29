@@ -5,7 +5,15 @@
 <meta name="author" content="{{post[0]}}" />
 <meta name="description" content="{{post[4]}}" />
 <meta property="og:title" content="menele.me - {{post[2]}}" />
+<meta property="og:description" content="{{post[4]}}" />
+
+{% if post[9] %}
+<meta property="og:video" content="https://dev.menele.me/static/img/posts_video/{{post[10]}}.webm" />
+{% else %}
 <meta property="og:image" content="/static/img/posts/{{post[10]}}_small.webp" />
+{% endif %}
+
+
 {% endblock %}
 
 {% block title %}

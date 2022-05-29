@@ -1,8 +1,8 @@
 Flask==2.0.2
-moviepy==1.0.3
-Pillow==9.1.0
-python_bcrypt==0.3.2
-pytz==2019.3
-SQLAlchemy==1.4.35
-validators==0.18.2
-yagmail==0.15.277
+moviepy
+Pillow
+bcrypt
+pytz
+SQLAlchemy
+validators
+yagmail

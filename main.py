@@ -32,7 +32,7 @@ def before_request_func():
 @app.route('/<int:page>', methods=['GET', 'POST'])
 def index(page):
 
-    valid_requests = ("hot", "views","upvotes","id","1","7","30","999"," ","DESC") 
+    valid_requests = ("hot", "views","upvotes","id","1","7","30","999"," ",'',"DESC") 
 
     if page < 1:
         page = 1
@@ -57,6 +57,9 @@ def index(page):
 
     c.execute("SELECT name FROM categories")
     categories = c.fetchall()
+
+    if category is None:
+        category = ""
 
     if sort_by not in valid_requests or time not in valid_requests or order not in valid_requests or category not in list(map(lambda x: x[0], categories))+['']:
         flash("sex")

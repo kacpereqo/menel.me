@@ -1,5 +1,6 @@
 import re
 import secrets
+from xml import dom
 import yagmail
 from flask import Blueprint, render_template
 from flask import flash, render_template, request, redirect, url_for, session, current_app
@@ -11,6 +12,8 @@ from pytz import timezone
 
 login_app = Blueprint('login_app', __name__, static_folder="../static",
                       template_folder="../templates")
+
+domain = "dev.menele.me"
 
 @login_app.before_request
 def before_request_func():
@@ -140,9 +143,9 @@ def register():
                 flash(f'Email jest zajęty!')
                 return render_template('register.html', reason=reason)
 
-            verify_link = f"http://localhost:5000/verify?email={email}&token={token}"
+            verify_link = f"http://{domain}/verify?email={email}&token={token}"
 
-            with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
+            with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
                 yag.send(email, "Zweryfikuj konto", [
                          nick,"\n","Zweryfikuj konto na menele.me.","\n", verify_link,"\n","Pozdrawiamy, załoga menele.me B)"])
 
@@ -218,11 +221,11 @@ def reset_password():
                 c.execute("UPDATE users SET token = ? WHERE email = ?", (token, email))
                 conn.commit()
 
-                change_pass = f"http://localhost:5000/forgotten_password?email={email}&token={token}"
+                change_pass = f"http://{domain}/forgotten_password?email={email}&token={token}"
             
                 print(change_pass)
 
-                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
+                with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
                     yag.send(email, "Reset hasła", ["W celu zresetowania hasła kliknij w poniższy link, nie udostępniaj tego linku!", "\n", change_pass,"\n","Pozdrawiamy, załoga menele.me B)"])
 
             flash("Jeśli podany email istnieje w bazie danych, otrzymasz link do zmiany hasła")
@@ -312,7 +315,7 @@ def unban():
                 c.execute("UPDATE users SET reason = ? WHERE id = ?", (reason,data[0]))
                 conn.commit()
 
-                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
+                with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
                     yag.send(data[3], "Konto odblokowane", ["Hejka "+data[1],"\n",
                             "<style>p {font-family: \"Comic Sans MS\", \"Comic Sans\", cursive;}</style><h3><p>Twoje konto zostało odblokowane!</p><h3>","\n","Pozdrawiamy, załoga menele.me B)"])
 
@@ -359,7 +362,9 @@ def ban():
                 c.execute("UPDATE users SET reason = ? WHERE id = ?", (reason,data[0]))
                 conn.commit()
 
-                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
+
+                # dokoncze to xd https://www.youtube.com/watch?v=SpmWlHRVn9c
+                with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
                     yag.send(data[3], "Konto zablokowane", ["Hejka "+data[1],"\n",
                             "<style>p {font-family: \"Comic Sans MS\", \"Comic Sans\", cursive;}</style><h3><p>Twoje konto zostało zablokowane!</p><h3>","\n","<p>Powód: "+reason+"</p>"])
 
