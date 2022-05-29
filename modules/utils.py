@@ -15,13 +15,13 @@ def config(app):
     from modules.user import user_app
     from modules.admin import admin_app
     with app.app_context():
-        app.secret_key = "rot13"
-        app.permanent_session_lifetime = timedelta(minutes=10)
+        app.secret_key = "ndc3C$C34c4hv03hd03yv3ERGkcug94cj9c5csCGW!)#dsfksFSDfsgksfdsFS94cjcf-"
+        app.permanent_session_lifetime = timedelta(hours=12)
         app.register_blueprint(login_app)
         app.register_blueprint(post_app)
         app.register_blueprint(user_app)
         app.register_blueprint(admin_app)
-        # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 7200
+        app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 7200
         app.config['MAX_CONTENT_LENGTH'] = 100 * 1000 * 1000
         app.config['SESSION_PERMANENT'] = False
         app.config['USE_SESSION_FOR_NEXT'] = False

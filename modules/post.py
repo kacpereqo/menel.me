@@ -195,8 +195,11 @@ def post_lookup(post_id):
                 voted = voted[0]
         else:
             voted = None
-
-        return render_template('post_lookup.html', post=post, comments=comments, voted=voted)
+            
+        
+        print(post)
+        meta_tags = ", ".join(post[2].split(" "))
+        return render_template('post_lookup.html', post=post, comments=comments, voted=voted, meta_tags=meta_tags)
 
 @post_app.route("/upvote/<post_id>", methods=['post'])
 def upvote(post_id):
