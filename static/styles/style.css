@@ -94,10 +94,11 @@ font-weight: bold;
     margin-right: 322px;
     overflow: auto;
     font-size: 12px;
-    width: 470px;
+    width: 490px;
     block-size: fit-content;
     text-align: justify;
-    height: 1158px;
+    height: 400px;
+    margin-bottom: 10px;
 }
 
 #content {
@@ -116,7 +117,7 @@ font-weight: bold;
 
 #postowanie {
     width: 100%;
-    height: 230px;
+    height: 320px;
     padding: 10px;
     margin-bottom: 10px;
     background-color: #f2f2f2;
@@ -201,6 +202,7 @@ ul span {
     right: 10px;
     width: 200px;
 }
+
 
 .rejestracja-field:last-child {
     position: absolute;

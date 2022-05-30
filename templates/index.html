@@ -83,7 +83,9 @@ menele.me - strona główna
             </li>
             <li>Dodane przez: <a href="{{url_for('user_app.user', nick = post[1])}}">{{post[1]}}</a></li>
             <li>Dodano: {{post[2][:-7]}}</li>
-            <li> kategorie: {{post[8]}} </li>
+            {% if post[8] %}
+            <li>Kategorie: {{post[8]}} </li>
+            {% endif %}
             <li id="stats">{{post[6]}}+ {{post[7]}}- {{post[5]}} wyświetleń</li>
         </ul>
         <a href="{{url_for('post_app.post_lookup', post_id = post[0])}}"><img

@@ -63,14 +63,18 @@ menele.me - dodaj post
         Maksymalna wielkość pliku to 128MB
         <br>
         <br>
-        kategorie:
+        Publikując post, wyrażasz zgodę na <a href="{{ url_for('ciasteczka') }}">regulamin</a>
+        <br>
+        <br>
+        Kategorie:
         <select class="chzn-select" multiple="true" name="kategorie" style="width:200px;">
             {% for kategoria in kategorie %}
             <option value="{{kategoria[0]}}">{{kategoria[0]}}</option>
             {% endfor %}
-    </select>
+        </select>
     
-
+        <br>
+        <br>
 
         <center><input type="submit" id="rejestracja-button" value="Prześlij"></center>
 

@@ -74,9 +74,14 @@ def index(page):
 
 @app.route('/search', methods=['POST'])
 def search():
+    q = request.form['query']
+
+    if q is "":
+        return redirect(url_for('index'))
+
     conn = get_conn()
     c = conn.cursor()
-    q = request.form['query']
+
     c.execute("SELECT posts.id, users.nick, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.category, posts.file_name  FROM posts,users where posts.user_id = users.id and posts.title like ? ORDER BY posts.id DESC LIMIT 10", ('%' + q + '%',))
     posts = c.fetchall()
     

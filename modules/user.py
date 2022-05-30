@@ -43,7 +43,7 @@ def user(nick):
             return redirect(url_for('index'))
 
         else:
-            c.execute(f"SELECT posts.id, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.file_name  FROM posts where posts.user_id = ? ORDER BY posts.id", (user[0],))
+            c.execute(f"SELECT posts.id, posts.date, posts.img_id, posts.title, posts.views, posts.upvotes, posts.downvotes, posts.file_name  FROM posts where posts.user_id = ? ORDER BY posts.id DESC", (user[0],))
             posts = c.fetchall()
 
             points = 0
