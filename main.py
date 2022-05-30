@@ -107,7 +107,7 @@ def kontakt():
 # +48 69 69 69 69 call me later <3 :3
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
 # smierc ma haslo sex123 nie arek123
 
 # lihrjpnoszghyqjk
