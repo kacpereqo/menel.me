@@ -145,7 +145,7 @@ def register():
 
             verify_link = f"http://{domain}/verify?email={email}&token={token}"
 
-            with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
+            with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
                 yag.send(email, "Zweryfikuj konto", [
                          nick,"\n","Zweryfikuj konto na menele.me.","\n", verify_link,"\n","Pozdrawiamy, załoga menele.me B)"])
 
@@ -225,7 +225,7 @@ def reset_password():
             
                 print(change_pass)
 
-                with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
+                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
                     yag.send(email, "Reset hasła", ["W celu zresetowania hasła kliknij w poniższy link, nie udostępniaj tego linku!", "\n", change_pass,"\n","Pozdrawiamy, załoga menele.me B)"])
 
             flash("Jeśli podany email istnieje w bazie danych, otrzymasz link do zmiany hasła")
@@ -315,7 +315,7 @@ def unban():
                 c.execute("UPDATE users SET reason = ? WHERE id = ?", (reason,data[0]))
                 conn.commit()
 
-                with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
+                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
                     yag.send(data[3], "Konto odblokowane", ["Hejka "+data[1],"\n",
                             "<style>p {font-family: \"Comic Sans MS\", \"Comic Sans\", cursive;}</style><h3><p>Twoje konto zostało odblokowane!</p><h3>","\n","Pozdrawiamy, załoga menele.me B)"])
 
@@ -364,7 +364,7 @@ def ban():
 
 
                 # dokoncze to xd https://www.youtube.com/watch?v=SpmWlHRVn9c
-                with yagmail.SMTP("meneleme.noreply@gmail.com", oauth2_file="oauth.json") as yag:
+                with yagmail.SMTP("meneleme.noreply@gmail.com", "lihrjpnoszghyqjk") as yag:
                     yag.send(data[3], "Konto zablokowane", ["Hejka "+data[1],"\n",
                             "<style>p {font-family: \"Comic Sans MS\", \"Comic Sans\", cursive;}</style><h3><p>Twoje konto zostało zablokowane!</p><h3>","\n","<p>Powód: "+reason+"</p>"])
 
