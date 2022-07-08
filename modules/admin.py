@@ -183,6 +183,39 @@ def permissions():
             
         return render_template('permissions.html', perm=perm)
 
+@admin_app.route('/admin/remove_post', methods=['GET', 'POST'])
+def remove_post():
+    if "user" in session:
+        conn = get_conn()
+        c = conn.cursor()
+        c.execute("SELECT permission FROM users WHERE id = ?", (session["user"]['id'],))
+        if c.fetchone()[0] < 2:
+            flash("Nie masz uprawnień do tej strony!")
+            return redirect(url_for('index'))
+    else:
+        flash("Nie masz uprawnień do tej strony!")
+        return redirect(url_for('index'))
+
+    with current_app.app_context():
+        if request.method == 'POST':
+
+            conn = get_conn()
+            c = conn.cursor()
+            c.execute("SELECT * FROM posts WHERE id = ?", (request.form['id_post'],))
+
+            data = c.fetchone()
+
+            if data is None:
+                flash("Nie ma takiego posta!")
+                return render_template('remove_post.html')
+
+            if request.form['smb'] == "Usun":
+                c.execute("DELETE FROM posts WHERE id = ?", (str(data[0]), ))
+                flash("Post został usunięty!")
+                return render_template('remove_post.html')
+                
+        return render_template('remove_post.html')
+    
 
 @admin_app.route('/report/<nick>/<int:post_id>', methods=['GET', 'POST'])
 def report(nick, post_id):
