@@ -211,6 +211,7 @@ def remove_post():
 
             if request.form['smb'] == "Usun":
                 c.execute("DELETE FROM posts WHERE id = ?", (str(data[0]), ))
+                conn.commit()
                 flash("Post został usunięty!")
                 return render_template('remove_post.html')
                 
